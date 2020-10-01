@@ -1,32 +1,56 @@
 import { createStore } from 'redux';
 
-let data = ['Sample','Sample2'];
+let data = ['Sample'];
 
 let state_value = {
     title:    'React',
     data:     data,
+    item:     'test'
 }
 
 /***********************レデューサー*************************/
-function todoReducer( state = state_value, action ){
+export function todoReducer( state = state_value, action ){
     switch( action.type ){
         case 'ADD':
-        return addReduce( state, action );
+            return addReduce( state, action );
+            break;
         case 'DELETE':
-        return {
-            title: 'TEST2',
-            data: data,
-        };
+            return deleteReduce( state , action );
+            break;
         default:
-        return state;
+            return state;
+    }
+}
+
+//追加のレデュース処理
+function addReduce( state , action ){
+    return {
+        title:  state.title,
+        item:   action.item,
+        data:   state.data
+    };
+}
+
+function deleteReduce( state , action ){
+    return {
+        title:  action.item,
+        data:   state.data,
+        item:   'test'
     }
 }
 
 /*********************アクションクリエーター******************/
-function addReduce( state , action ){
-    return {
-        title: 'TEST1',
-        data:   data,
+
+export function addTodo(text){
+    return{
+        type:   'ADD',
+        item:   text
+    }
+}
+export function deleteTodo(text){
+    return{
+        type:   'DELETE',
+        item:   text
     }
 }
 
