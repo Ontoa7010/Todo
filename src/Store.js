@@ -13,10 +13,8 @@ export function todoReducer( state = state_value, action ){
     switch( action.type ){
         case 'ADD':
             return addReduce( state, action );
-            break;
         case 'DELETE':
             return deleteReduce( state , action );
-            break;
         default:
             return state;
     }
@@ -24,10 +22,12 @@ export function todoReducer( state = state_value, action ){
 
 //追加のレデュース処理
 function addReduce( state , action ){
+    let tempdata = state.data;
+    tempdata.push( action.item );
     return {
         title:  state.title,
         item:   action.item,
-        data:   state.data
+        data:   tempdata
     };
 }
 
