@@ -16,22 +16,12 @@ class App extends Component{
 App = connect()(App);
 
 class CheckList extends Component{
-    constructor(props){
-        super(props);
-        this.doAction = this.doAction.bind(this);
-    }
-
-    doAction(e){
-        this.props.dispatch( { type: 'DELETE' } );
-    }
-
     render(){
         return(
         <div>
             <h1>{this.props.title}</h1>
             <AddForm />
             <List />
-            <button onClick={this.doAction}>Click</button>
         </div>
         );
     }
@@ -71,4 +61,5 @@ class Checkbox extends Component{
 
 Checkbox = connect( mappingState )( Checkbox );
 
-export default App;
+
+export default connect( mappingState )( App );

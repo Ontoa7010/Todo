@@ -36,7 +36,6 @@ class AddForm extends Component{
                     <input type="text" onChange={ this.doChange } />
                     <input type="submit" value="追加" />
                 </form>
-                <p>{this.state.item}</p>
             </div>
         );
     }
