@@ -40,8 +40,8 @@ class Item extends Component{
     id = 0;
     render(){
         return(<div>
-            { this.props.data.map( (value)=>(
-                <li key={ this.id++ }><Checkbox />{value}
+            { this.props.data.checkList.map( (value)=>(
+                <li key={ this.id++ }><Checkbox />{value.item}
                 </li>
             ))}
         </div>
