@@ -1,4 +1,7 @@
 body{
+    ul{
+        list-style: none;
+    }
     input{
         &:invalid{
             border: 2px dashed red;
