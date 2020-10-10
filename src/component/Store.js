@@ -1,4 +1,5 @@
 import { createStore } from 'redux';
+import { ADD , ADD_SUB , DELETE , CHECKED } from '../actions';
 
 let CheckList = [];
 let CheckListSub = [];
@@ -42,13 +43,13 @@ let state_value = {
 /***********************レデューサー*************************/
 export function todoReducer( state = state_value, action ){
     switch( action.type ){
-        case 'ADD':
+        case ADD:
             return addReduce( state, action );
-        case 'ADD_SUB':
+        case ADD_SUB:
             return addSubReduce( state , action );
-        case 'CHECKED':
+        case CHECKED:
             return checkReduce( state , action );
-        case 'DELETE':
+        case DELETE:
             return deleteReduce( state , action );
         default:
             return state;
@@ -98,13 +99,13 @@ function deleteReduce( state , action ){
 
 export function addTodo(text){
     return{
-        type:   'ADD',
+        type:   ADD,
         item:   text
     }
 }
 export function deleteTodo(text){
     return{
-        type:   'DELETE',
+        type:   DELETE,
         item:   text
     }
 }

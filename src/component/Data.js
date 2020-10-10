@@ -21,18 +21,28 @@ const db = firebase.firestore();
 
 const ReadDatabase = () => {
     let docRef = db.collection("test").doc("test");
-    console.log(docRef);
+    // console.log(docRef);
 
-    docRef.get().then(function(doc) {
-        if (doc.exists) {
-            console.log("Document data:", doc.data());
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
-    }).catch(function(error) {
-        console.log("Error getting document:", error);
+    let docRef2 = db.collection("MyTask").get().then( (querySnapshot) => {
+        querySnapshot.forEach( (doc) => {
+            console.log(doc.id +': ' + doc.data().item);
+        })
     });
+    // console.log(docRef2);
+
+
+    // docRef.get().then( (doc) => {
+    //     if (doc.exists) {
+    //         console.log("Document data:", doc.data());
+    //         console.log("Document id:" , doc.data().id);
+    //         console.log("Document id:" , doc.data().message);
+    //     } else {
+    //         // doc.data() will be undefined in this case
+    //         console.log("No such document!");
+    //     }
+    // }).catch(function(error) {
+    //     console.log("Error getting document:", error);
+    // });
 }
 
 export default ReadDatabase;
