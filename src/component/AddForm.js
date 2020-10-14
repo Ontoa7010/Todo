@@ -1,5 +1,4 @@
 import React , { Component } from 'react';
-import { connect } from 'react-redux';
 import '../css/App.css';
 import { addTodo } from './Store';
 
@@ -42,10 +41,9 @@ class AddForm extends Component{
                         size={ this.props.data.maxlength }/>
                     <input type="submit" value="追加" />
                 </form>
-                {/* <p>{this.state.item}</p> */}
             </div>
         );
     }
 }
 
-export default connect( (state)=>state )( AddForm );
+export default AddForm;
