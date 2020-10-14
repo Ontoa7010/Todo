@@ -17,20 +17,15 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
 const db = firebase.firestore();
-
-export const data = [];
+const data = [];
 
 //データベースとのやり取りをする際、非同期処理の調整
 const asynFunc1 = () => {
     return new Promise( (resolve , reject ) => {
-        let i = 0;
         let docRef = db.collection("Mytask").get();
-
         docRef.then( (querySnapshot) => {
             querySnapshot.forEach( (doc) => {
-                // console.log( doc.id +': ' + doc.data());
-                data[i] = doc.data();
-                i++;
+                data.push( doc.data() );
             });
             if(data != null){
                 resolve(data);
@@ -41,25 +36,18 @@ const asynFunc1 = () => {
     });
 }
 
-export const ReadDatabase = ({ state , dispatch }) => {
+//firebaseに格納されているデータを読み取って一覧表示
+export function ReadDatabase ({ state , dispatch }) {
     asynFunc1().then( 
         (value) => {
+            // console.log(dispatch);
             dispatch({ type: LOAD_DATA , data: value });
         },
         (value)=>{
             console.log(`error:${value}`);
         }
     );
-    return (
-        state.map( (event , index) => {
-            return(
-            <li  key={index}><input type="checkbox"/>{event.item}<button>削除</button></li>
-            );
-        })
-    );
 }
-
-
 
 const AddDb = item =>{
     console.log(item);
