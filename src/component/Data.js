@@ -1,5 +1,4 @@
 import firebase from 'firebase';
-import React from 'react';
 import { LOAD_DATA } from '../actions';
 
 const firebaseConfig = {
@@ -20,11 +19,13 @@ const db = firebase.firestore();
 const data = [];
 
 //データベースとのやり取りをする際、非同期処理の調整
-const asynFunc1 = () => {
+export const asynFunc1 = () => {
     return new Promise( (resolve , reject ) => {
+        console.log('db:' ,db);
         let docRef = db.collection("Mytask").get();
         docRef.then( (querySnapshot) => {
             querySnapshot.forEach( (doc) => {
+                // console.log(doc);
                 data.push( doc.data() );
             });
             if(data != null){
@@ -37,10 +38,9 @@ const asynFunc1 = () => {
 }
 
 //firebaseに格納されているデータを読み取って一覧表示
-export function ReadDatabase ({ state , dispatch }) {
+export const readDocument = ({ dispatch }) => {
     asynFunc1().then( 
         (value) => {
-            // console.log(dispatch);
             dispatch({ type: LOAD_DATA , data: value });
         },
         (value)=>{
@@ -49,11 +49,32 @@ export function ReadDatabase ({ state , dispatch }) {
     );
 }
 
-const AddDb = item =>{
-    console.log(item);
-    db.collection("Mytask").add({
-        id: 200,
-        item: item,
+//firebaseに新しいドキュメントを追加
+const addDocument = (item, id) =>{
+    db.collection("Mytask").doc(`${id}`).set({
+        id,
+        item,
+    }).then( (docRef) => {
+        console.log("Document written with ID:" , docRef.id);
+    }).catch( (error) =>{
+        console.error("Error adding document: " , error);
+    })
+}
+
+//ドキュメントを削除する関数
+export const deleteDocument = (item , id) =>{
+    db.collection("Mytask").doc(`${id}`).delete().then( (docRef) => {
+        console.log("Document delete with ID:" , docRef.id);
+    }).catch( (error) =>{
+        console.error("Error delete document: " , error);
+    })
+}
+
+//サブコレクションにドキュメントを追加すす
+export const addSubDocument = () => {
+    db.collection('Mytask').doc('6').collection('SubTask').doc('0').set({
+        id: 0,
+        item: 'SubTask',
     }).then( (docRef) => {
         console.log("Document written with ID:" , docRef.id);
     }).catch( (error) =>{
@@ -62,4 +83,4 @@ const AddDb = item =>{
 }
 
 
-export default AddDb;
+export default addDocument;

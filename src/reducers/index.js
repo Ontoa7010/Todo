@@ -1,6 +1,6 @@
 import { ADD , ADD_SUB , DELETE , CHECKED , LOAD_DATA } from '../actions';
 
-import addDb from '../component/Data';
+import addDocument , { deleteDocument, asynFunc1 } from '../component/Data';
 
 /***********************レデューサー*************************/
 const events = ( state = [], action ) => {
@@ -21,11 +21,11 @@ const events = ( state = [], action ) => {
 }
 
 //追加のレデュース処理
-function addReduce( state , action ){
-    addDb( action.item );
+const addReduce = ( state , action ) => {
     const event = { item: action.item }
     const length = state.length;
     let id = length === 0 ? 1 : state[length-1].id + 1;
+    addDocument( action.item , id  );
     return [...state , {id, ...event}];
 }
 
@@ -41,11 +41,14 @@ const checkReduce = ( state , action ) => {
     };
 }
 const deleteReduce = ( state , action ) =>{
-    return state;
+    deleteDocument( action.item , action.id );
+    console.log('delete after state: ' ,state);
+    const result = state.filter( event => event.id !== action.id );
+    console.log('result: ' , result);
+    return result;
 }
 
 const loadData = ( state , action ) =>{
-    console.log('action.data: ',action.data);
     state = action.data;
     console.log('state: ' ,state);
     return state;
@@ -59,10 +62,11 @@ export function addTodo(text){
         item:   text
     }
 }
-export function deleteTodo(text){
+export function deleteTodo( text , id){
     return{
         type:   DELETE,
-        item:   text
+        item:   text,
+        id:     id
     }
 }
 

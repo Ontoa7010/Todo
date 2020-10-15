@@ -1,1 +1,56 @@
-/* No CSS *//*# sourceMappingURL=index.css.map */
+body header {
+  height: 15vh;
+  padding: 0;
+  margin: 0;
+}
+
+body header h1 {
+  padding: 10px 0 0 5vw;
+  font-size: 50px;
+  text-shadow: 2px 2px 1px #dbffff, -2px 2px 1px #dbffff, 2px -2px 1px #dbffff, -2px -2px 1px #dbffff, 2px 0px 1px #dbffff, 0px 2px 1px #dbffff, -2px 0px 1px #dbffff, 0px -2px 1px black;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, white), color-stop(30%, #a4e5ed), color-stop(70%, #29c1e3), color-stop(90%, #0c8bcf), to(#2381cf));
+  background: linear-gradient(to bottom, white 5%, #a4e5ed 30%, #29c1e3 70%, #0c8bcf 90%, #2381cf);
+}
+
+body header nav {
+  margin: 0;
+  padding: 0;
+  background-color: #1cf9fc;
+}
+
+body header nav ul {
+  padding: 0;
+  margin: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  list-style: none;
+}
+
+body header nav ul li {
+  width: 50vw;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  border-right: solid 2px #dbffff;
+}
+
+body #main {
+  margin: 0 5vw 0 5vw;
+  margin-top: 100px;
+}
+
+body #main ul {
+  list-style: none;
+}
+
+body #main input:invalid {
+  border: 2px dashed red;
+}
+
+body #main input:valid {
+  border: 1pz solid blue;
+}
+/*# sourceMappingURL=index.css.map */

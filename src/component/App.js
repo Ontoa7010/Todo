@@ -4,7 +4,8 @@ import reducer ,{ addTodo } from '../reducers';
 import Header from './Header';
 import Form from './Form';
 import Event from './Event';
-import { readDocument } from './Data';
+import { readDocument , addSubDocument } from './Data';
+
 
 import '../css/App.css';
 
@@ -16,18 +17,31 @@ const App = () => {
         readDocument({ dispatch });
     }, [] );
 
+    // サブコレクションにドキュメントを追加するテスト用コード
+    useEffect( () => {
+        addSubDocument();
+    }, [] );
+
     return (
-        <div>
+        <>
             <Header />
-            <Form dispatch={dispatch}/>
-            <ul>
-                { state.map( (event , index) => {
-                    return(
-                        <Event key={index} event={event} dispatch={dispatch}/>
-                    );
-                })}
-            </ul>
-        </div>
+            <div id="main">
+                <h2>TodoList</h2>
+                <Form dispatch={dispatch}/>
+                <table>
+                    <thead>
+                    </thead>
+                    <tbody>
+                        { state.map( (event , index) => {
+                            return(
+                                <Event key={index} event={event} dispatch={dispatch}/>
+                            );
+                        })}
+                    </tbody>
+                </table>
+
+            </div>
+        </>
     );
 }
 
