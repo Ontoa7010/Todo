@@ -18,9 +18,9 @@ const App = () => {
     }, [] );
 
     // サブコレクションにドキュメントを追加するテスト用コード
-    useEffect( () => {
-        addSubDocument();
-    }, [] );
+    // useEffect( () => {
+    //     addSubDocument();
+    // }, [] );
 
     return (
         <>
