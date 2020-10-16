@@ -16,12 +16,12 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
 const db = firebase.firestore();
-const data = [];
 
 //データベースとのやり取りをする際、非同期処理の調整
-export const asynFunc1 = () => {
+const asynReadDocument = () => {
     return new Promise( (resolve , reject ) => {
-        console.log('db:' ,db);
+        const data = [];
+        // console.log('db:' ,db);
         let docRef = db.collection("Mytask").get();
         docRef.then( (querySnapshot) => {
             querySnapshot.forEach( (doc) => {
@@ -39,7 +39,7 @@ export const asynFunc1 = () => {
 
 //firebaseに格納されているデータを読み取って一覧表示
 export const readDocument = ({ dispatch }) => {
-    asynFunc1().then( 
+    asynReadDocument().then( 
         (value) => {
             dispatch({ type: LOAD_DATA , data: value });
         },
@@ -48,6 +48,40 @@ export const readDocument = ({ dispatch }) => {
         }
     );
 }
+
+
+//サブコレクションのデータを取得する
+const asynReadSubDocument = (id) => {
+    return new Promise( (resolve , reject ) => {
+        const data = [];
+        // console.log('db:' ,db);
+        let docRef = db.collection("Mytask").doc(`${id}`).collection('SubTask').get();
+        docRef.then( (querySnapshot) => {
+            querySnapshot.forEach( (doc) => {
+                // console.log(doc);
+                data.push( doc.data() );
+            });
+            if(data != null){
+                resolve(data);
+            }else{
+                reject('失敗');
+            }
+        });
+    });
+}
+
+export const readSubCollection = ({ dispatch , id })=>{
+    asynReadDocument( id ).then( 
+        ( value ) => {
+            dispatch({ type: LOAD_DATA , data: value });
+            console.log(value);
+        },
+        ( value )=>{
+            console.log(`error:${value}`);
+        }
+    );
+}
+
 
 //firebaseに新しいドキュメントを追加
 const addDocument = (item, id) =>{

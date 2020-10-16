@@ -1,4 +1,4 @@
-import { ADD , ADD_SUB , DELETE , CHECKED , LOAD_DATA } from '../actions';
+import { ADD , ADD_SUB , DELETE , CHECKED , LOAD_DATA , LOAD_SUB_DATA } from '../actions';
 
 import addDocument , { deleteDocument, asynFunc1 } from '../component/Data';
 
@@ -15,6 +15,8 @@ const events = ( state = [], action ) => {
             return deleteReduce( state , action );
         case LOAD_DATA:
             return loadData( state , action );
+        case LOAD_SUB_DATA:
+            return loadSubData( state , action );
         default:
             return state;
     }
@@ -49,6 +51,12 @@ const deleteReduce = ( state , action ) =>{
 }
 
 const loadData = ( state , action ) =>{
+    state = action.data;
+    console.log('state: ' ,state);
+    return state;
+}
+
+const loadSubData = ( state , action ) =>{
     state = action.data;
     console.log('state: ' ,state);
     return state;

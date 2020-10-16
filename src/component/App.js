@@ -4,7 +4,7 @@ import reducer ,{ addTodo } from '../reducers';
 import Header from './Header';
 import Form from './Form';
 import Event from './Event';
-import { readDocument , addSubDocument } from './Data';
+import { readDocument , addSubDocument , readSubCollection } from './Data';
 
 
 import '../css/App.css';
@@ -17,6 +17,9 @@ const App = () => {
         readDocument({ dispatch });
     }, [] );
 
+    useEffect( ()=> {
+        readSubCollection(6);
+    },[]);
     // サブコレクションにドキュメントを追加するテスト用コード
     // useEffect( () => {
     //     addSubDocument();
