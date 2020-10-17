@@ -20,12 +20,30 @@ const Event = ({ event }) => {
     const doChecked = () =>{
 
     }
-
+    
+    const doAction = e => {
+        e.preventDefault();
+        console.log('Clicked button!');
+    }
     return(
-        <tr>
-            <td><input type="checkbox" onClick={ doChecked }/>{event.item}</td>
-            <td><button onClick={ doDelete }>削除</button></td>
-        </tr>
+        <li>
+            <input type="checkbox" onClick={ doChecked }/>{event.item}
+            <div className="showSubTodo_button" onClick={doAction}></div>
+            <div className="Delete" onClick={ doDelete }></div>
+
+            <ul>
+            {
+                event.subList.map(( value , index )=>{
+                    return (
+                        <li key={index}> 
+                            <input type="checkbox" onClick={ doChecked }/>{value.item}
+                            <div className="Delete"></div>
+                        </li>
+                    );
+                })
+            }
+            </ul>
+        </li>
     );
 
 }

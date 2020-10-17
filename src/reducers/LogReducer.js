@@ -1,5 +1,6 @@
 import {
-    LOG_ADD , 
+    LOG_ADD ,
+    LOG_ADD_SUB ,
     LOG_DELETE_TODO , 
     LOG_DELETE_ALL_TODO , 
     LOG_DELETE_LOG , 
@@ -17,8 +18,9 @@ const log = ( state = [], action ) => {
         case LOG_ADD:
             event = { message: `Todo:「${action.item}」,id:${id} を追加しました` };
             return [ { id , ...event}　, ...state ];
-        // case LOG_ADD_SUB:
-        //     return state;
+        case LOG_ADD_SUB:
+            event = { message: `TaskID:${action.id}にSubTodo:「${action.item}」,id:${id} を追加しました` };
+            return [ { id , ...event}　, ...state ];
         // case LOG_CHECKED:
         //     return state;
         case LOG_DELETE_TODO:
@@ -40,6 +42,13 @@ const log = ( state = [], action ) => {
 export const logAddTodo = ( item ) => {
     return{
         type:   LOG_ADD,
+        item
+    };
+}
+export const logAddSubTodo = ( id , item ) => {
+    return{
+        type:   LOG_ADD_SUB,
+        id,
         item
     };
 }

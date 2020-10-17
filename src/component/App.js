@@ -29,6 +29,7 @@ const App = () => {
     useEffect( ()=> {
         //引数を全て文字列に変換する
         const string = JSON.stringify(state);
+        //ローカルストレージに保存
         localStorage.setItem( APP_KEY , string );
     }, [state]);
 

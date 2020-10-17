@@ -9,14 +9,26 @@ const todo = ( state = [] , action ) => {
     switch( action.type ){
         case ADD:
             const event = { 
-                item:   action.item,
+                id,
+                item:       action.item,
                 date:       '',
                 flag:       false,
                 subList:    []
             }
-            return [...state , {id, ...event}];
+            return [...state , {...event}];
         case ADD_SUB:
-            return state;
+            let newState = state.slice();
+            newState.forEach( (value) => {
+                if( value.id === action.id ){
+                    value.subList.push( {
+                        id,
+                        item:       action.item,
+                        date:       '',
+                        flag:       false,
+                    } );
+                }
+            });
+            return newState;
         case CHECKED:
             return state;
         case DELETE:
@@ -49,4 +61,13 @@ export function deleteAllTodo(){
         type:   DELETE_ALL,
     }
 }
+
+export const addSubTodo = ( id , item ) => {
+    return{
+        type: ADD_SUB,
+        id,
+        item
+    }
+}
+
 export default todo;

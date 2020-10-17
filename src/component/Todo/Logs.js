@@ -7,13 +7,13 @@ const Logs = () => {
     const { state } = useContext( AppContext );
     
     return(
-        <>
-            <h3>操作ログ一覧</h3>
+        <div className="Log">
+            <h2>操作ログ一覧</h2>
             <table>
                 <thead>
                     <tr>
-                    <th>内容</th>
-                    <th>操作</th>
+                        <th>内容</th>
+                        <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,7 +24,7 @@ const Logs = () => {
                     })}
                 </tbody>
             </table>
-        </>
+        </div>
         
     );
 }

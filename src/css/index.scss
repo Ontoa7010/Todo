@@ -8,12 +8,66 @@ $keycolor5: #dbffff;
 @mixin wrapper{
     margin: 0 5vw 0 5vw;
 }
+@mixin showSubTodo_button{
+    content:"";
+    display:    inline-block;
+    height: 0px;
+    width: 0px;
+    margin-left: 30px;
+    &::before{
+        content:    "";
+        display:    inline-block;
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 11px 11px 0 11px;
+        border-color: $keycolor4 transparent transparent transparent;
+    }
+}
+
+@mixin delete_button{
+    content:    "";
+    height:     0;
+    width:      0;
+    position:   relative;
+    display:    inline-block;
+
+    &::after{
+        content:    "";
+        width:      20px;
+        display:    inline-block;
+        border-bottom:     solid 5px $keycolor4;
+        position: absolute;
+        top:    -7px;
+        transform: rotate(45deg);
+    }
+    &::before{
+        content:    "";
+        width:      20px;
+        display:    inline-block;
+        border-bottom:     solid 5px $keycolor4;
+        position: absolute;
+        top:    -7px;
+        transform: rotate(-45deg);
+    }
+}
+
+@mixin border_gradation( $color1 , $color2 ){
+    border-bottom:  3px solid;
+    border-image: linear-gradient( to right, $color1 0% , $color2 100%);
+    border-image-slice: 1;
+}
+@mixin no_margin(){
+    margin:0;
+    padding:0;
+}
 
 body{
     header{
-        height:     15vh;
-        padding:    0;
-        margin:     0;
+        height:     100px;
+        width:      100%;
+        @include no_margin();
+        position:   relative;
         h1{
             padding:    10px 0 0 5vw;
             font-size:  50px;
@@ -36,12 +90,14 @@ body{
             );
         }
         nav{    
-            margin:     0;
-            padding:    0;
+            @include no_margin();
+            width:      100vw;
             background-color: #1cf9fc;
+            position:   absolute;
+            top:    85px;
             ul{
-                padding:    0;
-                margin:     10px;
+                padding:    10px 0 10px;
+                margin:     0;
                 display:    flex;
                 justify-content: space-around;
                 list-style: none;
@@ -51,25 +107,60 @@ body{
                     font-size:      20px;
                     font-weight:    bold;
                     border-right:   solid 2px $keycolor5;
-    
+                    border-left:   solid 2px $keycolor5;
                 }
             }
         }
         
     }
+
     #main{
         @include wrapper();
         margin-top: 100px;
-        ul{
-            list-style: none;
+        position:   absolute;
+        top:    80px;
+        h2{
+            margin-bottom:  30px;
+            padding-left:   20px;
+            @include border_gradation($keycolor1, $keycolor4);
         }
-        input{
-            &:invalid{
-                border: 2px dashed red;
+        .TodoList{
+            margin-top: 20px;
+            ul{
+                list-style: none;
+                margin-top: 10px;
+                li{
+                    margin-bottom: 10px;
+                    button{
+                        margin-left: 30px;
+                    }
+                }
             }
-            &:valid{
-                border: 1pz solid blue;
+            .showSubTodo_button{
+                @include showSubTodo_button();
             }
+            .Delete{
+                margin-left: 30px;
+                @include delete_button();
+            }
+        }
+        .todoForm{
+            .subId{
+                width: 40px;
+            }
+        }
+        .Log{
+            table{
+                width:80vw;
+                // border: solid 1px gray;
+                td,th{
+                    border: solid 1px gray;
+                }
+                td{
+                    padding-left: 10px;
+                }
+            }
+
         }
     }
     
