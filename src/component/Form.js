@@ -1,8 +1,10 @@
-import React , { useReducer , useState , useEffect } from 'react';
-import { addTodo } from '../reducers';
+import React , { useState , useContext } from 'react';
+import AppContext from '../context';
 
-const Form = ({ dispatch }) =>{
+import { addTodo } from '../reducers/TodoReducer';
 
+const Form = () =>{
+    const { dispatch } = useContext( AppContext );
     const [ item , setItem ] = useState('');
 
     //フォームに文字が入力された時の挙動

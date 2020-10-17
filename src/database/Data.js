@@ -38,16 +38,16 @@ const asynReadDocument = () => {
 }
 
 //firebaseに格納されているデータを読み取って一覧表示
-export const readDocument = ({ dispatch }) => {
-    asynReadDocument().then( 
-        (value) => {
-            dispatch({ type: LOAD_DATA , data: value });
-        },
-        (value)=>{
-            console.log(`error:${value}`);
-        }
-    );
-}
+// export const readDocument = ({ dispatch }) => {
+//     asynReadDocument().then( 
+//         (value) => {
+//             dispatch({ type: LOAD_DATA , data: value });
+//         },
+//         (value)=>{
+//             console.log(`error:${value}`);
+//         }
+//     );
+// }
 
 
 //サブコレクションのデータを取得する
