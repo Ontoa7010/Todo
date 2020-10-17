@@ -3,7 +3,7 @@ import AppContext from '../context';
 import reducer from '../reducers';
 
 import Header from './Header';
-import Main from './Main';
+import Main from './Todo/Main';
 
 import '../css/App.css';
 
@@ -18,6 +18,7 @@ const App = () => {
     //ステートの値を設定
     const initialState = appState ? JSON.parse( appState ) :{
         todo: [],
+        log: []
     };
 
     //レデューサーの設定

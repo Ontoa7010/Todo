@@ -1,4 +1,4 @@
-import { ADD , ADD_SUB , DELETE , CHECKED , LOAD_DATA , LOAD_SUB_DATA } from '../actions';
+import { ADD , ADD_SUB , DELETE , DELETE_ALL , CHECKED , LOAD_DATA , LOAD_SUB_DATA } from '../actions';
 
 
 /***********************レデューサー*************************/
@@ -12,6 +12,8 @@ const todo = ( state = [], action ) => {
             return checkReduce( state , action );
         case DELETE:
             return deleteReduce( state , action );
+        case DELETE_ALL:
+            return deleteAllReduce( state , action );
         // case LOAD_DATA:
         //     return loadData( state , action );
         // case LOAD_SUB_DATA:
@@ -47,6 +49,10 @@ const deleteReduce = ( state , action ) =>{
     return result;
 }
 
+const deleteAllReduce = ( state , action ) => {
+    return [];
+}
+
 // const loadData = ( state , action ) =>{
 //     state = action.data;
 //     console.log('state: ' ,state);
@@ -61,13 +67,13 @@ const deleteReduce = ( state , action ) =>{
 
 /*********************アクションクリエーター******************/
 
-export function addTodo(text){
+export function addTodo( text ){
     return{
         type:   ADD,
         item:   text
     }
 }
-export function deleteTodo( text , id){
+export function deleteTodo( text , id ){
     return{
         type:   DELETE,
         item:   text,
@@ -75,4 +81,9 @@ export function deleteTodo( text , id){
     }
 }
 
+export function deleteAllTodo(){
+    return{
+        type:   DELETE_ALL,
+    }
+}
 export default todo;
