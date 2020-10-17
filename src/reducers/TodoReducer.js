@@ -1,70 +1,33 @@
-import { ADD , ADD_SUB , DELETE , DELETE_ALL , CHECKED , LOAD_DATA , LOAD_SUB_DATA } from '../actions';
+import { ADD , ADD_SUB , DELETE , DELETE_ALL , CHECKED } from '../actions';
 
 
 /***********************レデューサー*************************/
-const todo = ( state = [], action ) => {
+const todo = ( state = [] , action ) => {
+    const length = state.length;
+    let id = length === 0 ? 1 : state[length-1].id + 1;
+
     switch( action.type ){
         case ADD:
-            return addReduce( state, action );
+            const event = { 
+                item:   action.item,
+                date:       '',
+                flag:       false,
+                subList:    []
+            }
+            return [...state , {id, ...event}];
         case ADD_SUB:
-            return addSubReduce( state , action );
+            return state;
         case CHECKED:
-            return checkReduce( state , action );
+            return state;
         case DELETE:
-            return deleteReduce( state , action );
+            return state.filter( event => event.id !== action.id );
         case DELETE_ALL:
-            return deleteAllReduce( state , action );
-        // case LOAD_DATA:
-        //     return loadData( state , action );
-        // case LOAD_SUB_DATA:
-        //     return loadSubData( state , action );
+            return [];
+
         default:
             return state;
     }
 }
-
-//追加のレデュース処理
-const addReduce = ( state , action ) => {
-    const event = { item: action.item }
-    const length = state.length;
-    let id = length === 0 ? 1 : state[length-1].id + 1;
-    return [...state , {id, ...event}];
-}
-
-//サブリスト用の追加レデュース処理
-const addSubReduce =( state , action ) => {
-    return state;
-}
-
-//チェックボックスにチェックが入れられた時のレデュース処理
-const checkReduce = ( state , action ) => {
-    return{
-        state
-    };
-}
-const deleteReduce = ( state , action ) =>{
-    console.log('delete after state: ' ,state);
-    const result = state.filter( event => event.id !== action.id );
-    console.log('result: ' , result);
-    return result;
-}
-
-const deleteAllReduce = ( state , action ) => {
-    return [];
-}
-
-// const loadData = ( state , action ) =>{
-//     state = action.data;
-//     console.log('state: ' ,state);
-//     return state;
-// }
-
-// const loadSubData = ( state , action ) =>{
-//     state = action.data;
-//     console.log('state: ' ,state);
-//     return state;
-// }
-
 /*********************アクションクリエーター******************/
 
 export function addTodo( text ){

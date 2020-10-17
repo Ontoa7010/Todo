@@ -7,6 +7,7 @@ import Main from './Todo/Main';
 
 import '../css/App.css';
 
+
 const App = () => {
     //ローカルストレージに保存する時のキーを設定
     const APP_KEY = 'MyTaskTodo';

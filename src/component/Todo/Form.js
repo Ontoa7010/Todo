@@ -5,7 +5,7 @@ import { addTodo , deleteAllTodo } from '../../reducers/TodoReducer';
 import { logAddTodo , logDeleteAllTodo , logDeleteAllLog } from '../../reducers/LogReducer';
 
 const Form = () =>{
-    const { dispatch } = useContext( AppContext );
+    const { state , dispatch } = useContext( AppContext );
     const [ item , setItem ] = useState('');
 
     //フォームに文字が入力された時の挙動
@@ -17,6 +17,7 @@ const Form = () =>{
     //追加ボタンを押されたときの挙動
     const doAdd = e =>{
         e.preventDefault();
+        console.log(addFlag);
         dispatch( addTodo( item ) );
         dispatch( logAddTodo( item ));
     }
@@ -38,13 +39,17 @@ const Form = () =>{
         }
     }
     
+    //追加ボタンを押せるかどうかを判定する変数の宣言
+    const addFlag = item === '' ? true : false;
+    const allDeleteTodoFlag = state.todo.length === 0 ? true : false;
+    const allDeleteLogFlag = state.log.length === 0 ? true : false;
 
     return(
         <form>
                 <input type="text" id="addTodo" onChange={ doChange }/>
-                <input type="submit" value="追加" onClick={ doAdd }/>
-                <input type="submit" value="全てのTodoを削除する" onClick={ doAllDelete }/>
-                <input type="submit" value="全てのログを削除する" onClick={ doLogAllDelete }/>
+                <input type="submit" value="追加" onClick={ doAdd } disabled={ addFlag }/>
+                <input type="submit" value="全てのTodoを削除する" onClick={ doAllDelete } disabled={ allDeleteTodoFlag }/>
+                <input type="submit" value="全てのログを削除する" onClick={ doLogAllDelete } disabled={ allDeleteLogFlag }/>
             </form>
     );
 

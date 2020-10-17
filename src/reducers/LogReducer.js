@@ -1,11 +1,9 @@
 import {
     LOG_ADD , 
-    LOG_ADD_SUB , 
     LOG_DELETE_TODO , 
     LOG_DELETE_ALL_TODO , 
     LOG_DELETE_LOG , 
     LOG_DELETE_ALL_LOG , 
-    LOG_CHECKED 
 } from '../actions';
 
 
