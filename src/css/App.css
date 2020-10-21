@@ -1,1 +1,173 @@
-/* No CSS *//*# sourceMappingURL=App.css.map */
+@charset "UTF-8";
+/***************使い回し用*************************/
+/***************menuボタンのCSS*******************/
+/***************showSubTodoボタンのCSS*******************/
+/***************DeleteボタンのCSS*******************/
+/*******************時間を設定するボタン*********************/
+/**********************HTMLに実装*************************/
+body #main .flex {
+  width: 250px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+body #main .menuBotton {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: gray;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+}
+
+body #main .menuBotton .top-round {
+  content: "";
+  width: 4px;
+  height: 4px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 8px;
+}
+
+body #main .menuBotton .mid-round {
+  content: "";
+  width: 4px;
+  height: 4px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+
+body #main .menuBotton .bottom-round {
+  content: "";
+  width: 4px;
+  height: 4px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 14px;
+  left: 8px;
+}
+
+body #main .showSubTodo_button {
+  content: "";
+  width: 0px;
+  height: 0px;
+  margin-left: 30px;
+  display: inline-block;
+}
+
+body #main .showSubTodo_button::before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  display: inline-block;
+  border-style: solid;
+  border-width: 11px 11px 0 11px;
+  border-color: #2381cf transparent transparent transparent;
+}
+
+body #main .delete_button {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: relative;
+  display: inline-block;
+}
+
+body #main .delete_button::after {
+  content: "";
+  width: 20px;
+  border-top: solid 5px #2381cf;
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
+body #main .delete_button::before {
+  content: "";
+  width: 20px;
+  border-top: solid 5px #2381cf;
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+
+body #main .sub_delete_button {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: relative;
+  display: inline-block;
+}
+
+body #main .sub_delete_button::after {
+  content: "";
+  width: 20px;
+  border-top: solid 5px #2381cf;
+  display: inline-block;
+  position: absolute;
+  top: -10px;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
+body #main .sub_delete_button::before {
+  content: "";
+  width: 20px;
+  border-top: solid 5px #2381cf;
+  display: inline-block;
+  position: absolute;
+  top: -10px;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+
+body #main .date_button {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border: solid 1.5px black;
+  border-radius: 50%;
+  position: relative;
+  top: 2px;
+}
+
+body #main .date_button::before {
+  content: "";
+  width: 8px;
+  display: inline-block;
+  border-bottom: solid 0.5px gray;
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+  position: absolute;
+  top: 5px;
+  left: 4.5px;
+}
+
+body #main .date_button::after {
+  content: "";
+  width: 4.5px;
+  display: inline-block;
+  border-bottom: solid 0.5px gray;
+  -webkit-transform: rotate(-135deg);
+          transform: rotate(-135deg);
+  position: absolute;
+  top: 11px;
+  left: 8.5px;
+}
+/*# sourceMappingURL=App.css.map */

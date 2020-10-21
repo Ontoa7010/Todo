@@ -8,11 +8,13 @@ const TodoList = () => {
     return(
         <div className="TodoList">
             <ul>
-            { state.todo.map( (event , index) => {
-                    return(
-                        <Event key={ index } event={ event }/>
-                    );
-                })}
+            { 
+                state.todo.map( (event , index) => {
+                        return(
+                            <Event key={ index } event={ event }/>
+                        );
+                    })
+            }
         </ul>
         </div>
     );

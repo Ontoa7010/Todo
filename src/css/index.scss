@@ -8,49 +8,6 @@ $keycolor5: #dbffff;
 @mixin wrapper{
     margin: 0 5vw 0 5vw;
 }
-@mixin showSubTodo_button{
-    content:"";
-    display:    inline-block;
-    height: 0px;
-    width: 0px;
-    margin-left: 30px;
-    &::before{
-        content:    "";
-        display:    inline-block;
-        width: 0px;
-        height: 0px;
-        border-style: solid;
-        border-width: 11px 11px 0 11px;
-        border-color: $keycolor4 transparent transparent transparent;
-    }
-}
-
-@mixin delete_button{
-    content:    "";
-    height:     0;
-    width:      0;
-    position:   relative;
-    display:    inline-block;
-
-    &::after{
-        content:    "";
-        width:      20px;
-        display:    inline-block;
-        border-bottom:     solid 5px $keycolor4;
-        position: absolute;
-        top:    -7px;
-        transform: rotate(45deg);
-    }
-    &::before{
-        content:    "";
-        width:      20px;
-        display:    inline-block;
-        border-bottom:     solid 5px $keycolor4;
-        position: absolute;
-        top:    -7px;
-        transform: rotate(-45deg);
-    }
-}
 
 @mixin border_gradation( $color1 , $color2 ){
     border-bottom:  3px solid;
@@ -136,13 +93,6 @@ body{
                     }
                 }
             }
-            .showSubTodo_button{
-                @include showSubTodo_button();
-            }
-            .Delete{
-                margin-left: 30px;
-                @include delete_button();
-            }
         }
         .todoForm{
             .subId{
@@ -152,7 +102,6 @@ body{
         .Log{
             table{
                 width:80vw;
-                // border: solid 1px gray;
                 td,th{
                     border: solid 1px gray;
                 }

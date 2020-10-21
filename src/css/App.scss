@@ -1,0 +1,186 @@
+@charset 'utf-8';
+
+/***************使い回し用*************************/
+@mixin noSizeContent(){
+    content: "";
+    width:  0px;
+    height: 0px;
+}
+
+$keycolor1: #a4e5ed;
+$keycolor2: #29c1e3;
+$keycolor3: #0c8bcf;
+$keycolor4: #2381cf;
+$keycolor5: #dbffff;
+
+/***************menuボタンのCSS*******************/
+
+$menuBottonSize: 20px;
+$top:   1;
+$mid:   2;
+$bottom:3;
+
+//余白や円の大きさを計算して返す関数
+@function roundLeftPadding( $size ){
+    @return ( $size *2 / 5 );
+}
+@function roundSize( $size ){
+    @return ( $size * 1 / 5 );
+}
+@function roundsPadding( $position, $size ){
+    $margin: 0px;
+    @if $position == 1{
+        $margin: $size/10;
+    }@else if $position == 2{
+        $margin: $size/10 * 2 + roundSize($size);
+    }@else if $position == 3{
+        $margin: $size/10 * 3 + roundSize($size) * 2;
+    }
+    @return ( $margin );
+}
+
+//ボタンの丸部分を描画するCSS
+@mixin menuBtnRound( $position , $size:30px ){
+    content:    "";
+    width:      roundSize( $size );
+    height:     roundSize( $size );
+    background-color: white;
+    border-radius: 50%;
+    position:   absolute;
+    top:        roundsPadding( $position , $size );
+    left:       roundLeftPadding( $size );
+}
+
+//ボタンを作成するCSS
+@mixin menu_botton(){
+    content: "";
+    width:      $menuBottonSize;
+    height:     $menuBottonSize;
+    background-color:  gray;
+    display:    inline-block;
+    position:   relative;
+    top:        2px;
+    .top-round{
+        @include menuBtnRound( $top , $menuBottonSize);
+    } 
+    .mid-round{
+        @include menuBtnRound( $mid ,$menuBottonSize);
+    }
+    .bottom-round{
+        @include menuBtnRound( $bottom , $menuBottonSize );
+    }
+}
+
+
+/***************showSubTodoボタンのCSS*******************/
+
+@mixin showSubTodo_button{
+    @include        noSizeContent();
+    margin-left:    30px;
+    display:        inline-block;
+    &::before{
+        @include    noSizeContent();
+        display:    inline-block;
+        border-style: solid;
+        border-width: 11px 11px 0 11px;
+        border-color: $keycolor4 transparent transparent transparent;
+    }
+}
+
+/***************DeleteボタンのCSS*******************/
+
+//斜線部分を描画
+@mixin delete_border( $deg , $top:10px ){
+    content:    "";
+    width:      20px;
+    border-top: solid 5px $keycolor4;
+    display:    inline-block;
+    position:   absolute;
+    top:        $top;
+    transform:  rotate($deg);
+}
+
+//ボタンを描画
+@mixin delete_button{
+    @include    noSizeContent();
+    position:   relative;
+    display:    inline-block;
+    &::after{
+        @include delete_border(45deg);
+    }
+    &::before{
+        @include delete_border(-45deg);
+    }
+}
+
+@mixin sub_delete_button{
+    @include    noSizeContent();
+    position:   relative;
+    display:    inline-block;
+    &::after{
+        @include delete_border(45deg , -10px);
+    }
+    &::before{
+        @include delete_border(-45deg , -10px);
+    }
+}
+/*******************時間を設定するボタン*********************/
+
+@mixin date_button{
+    content:    "";
+    width:      20px;
+    height:     20px;
+    background-color:   white;
+    border:     solid 1.5px black;
+    border-radius: 50%;
+    position:   relative;
+    top:        2px;
+    &::before{
+        content:    "";
+        width:      8px;
+        display:    inline-block;
+        border-bottom:     solid 0.5px gray;
+        transform:  rotate(90deg);
+        position:   absolute;
+        top:5px;
+        left:4.5px;
+    }
+    &::after{
+        content:    "";
+        width:      4.5px;
+        display:    inline-block;
+        border-bottom:     solid 0.5px gray;
+        transform:  rotate(-135deg);
+        position:   absolute;
+        top:        11px;
+        left:       8.5px;
+    }
+}
+
+
+
+/**********************HTMLに実装*************************/
+body{
+    #main{
+        .flex{
+            width: 250px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .menuBotton{
+            @include menu_botton();
+        }
+        .showSubTodo_button{
+            @include showSubTodo_button();
+        }
+        .delete_button{
+            @include delete_button();
+        }
+        .sub_delete_button{
+            @include sub_delete_button();
+        }
+        .date_button{
+            @include date_button();
+        }
+    }
+}

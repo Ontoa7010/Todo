@@ -77,55 +77,6 @@ body #main .TodoList ul li button {
   margin-left: 30px;
 }
 
-body #main .TodoList .showSubTodo_button {
-  content: "";
-  display: inline-block;
-  height: 0px;
-  width: 0px;
-  margin-left: 30px;
-}
-
-body #main .TodoList .showSubTodo_button::before {
-  content: "";
-  display: inline-block;
-  width: 0px;
-  height: 0px;
-  border-style: solid;
-  border-width: 11px 11px 0 11px;
-  border-color: #2381cf transparent transparent transparent;
-}
-
-body #main .TodoList .Delete {
-  margin-left: 30px;
-  content: "";
-  height: 0;
-  width: 0;
-  position: relative;
-  display: inline-block;
-}
-
-body #main .TodoList .Delete::after {
-  content: "";
-  width: 20px;
-  display: inline-block;
-  border-bottom: solid 5px #2381cf;
-  position: absolute;
-  top: -7px;
-  -webkit-transform: rotate(45deg);
-          transform: rotate(45deg);
-}
-
-body #main .TodoList .Delete::before {
-  content: "";
-  width: 20px;
-  display: inline-block;
-  border-bottom: solid 5px #2381cf;
-  position: absolute;
-  top: -7px;
-  -webkit-transform: rotate(-45deg);
-          transform: rotate(-45deg);
-}
-
 body #main .todoForm .subId {
   width: 40px;
 }

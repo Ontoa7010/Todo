@@ -1,10 +1,11 @@
-import { ADD , ADD_SUB , DELETE , DELETE_ALL , CHECKED } from '../actions';
+import { ADD , ADD_SUB , DELETE , DELETE_ALL , CHECKED, SHOW_SUB_TODO } from '../actions';
 
 
 /***********************レデューサー*************************/
 const todo = ( state = [] , action ) => {
     const length = state.length;
     let id = length === 0 ? 1 : state[length-1].id + 1;
+    let newState =[];
 
     switch( action.type ){
         case ADD:
@@ -13,11 +14,12 @@ const todo = ( state = [] , action ) => {
                 item:       action.item,
                 date:       '',
                 flag:       false,
+                subListFlag:    true,
                 subList:    []
             }
             return [...state , {...event}];
         case ADD_SUB:
-            let newState = state.slice();
+            newState = state.slice();
             newState.forEach( (value) => {
                 if( value.id === action.id ){
                     value.subList.push( {
@@ -31,6 +33,15 @@ const todo = ( state = [] , action ) => {
             return newState;
         case CHECKED:
             return state;
+        case SHOW_SUB_TODO:
+            newState = state.slice();
+            newState.forEach( (value) => {
+                if( value.id === action.id ){
+                    value.subListFlag = !value.subListFlag;
+                }
+            });
+            console.log( newState );
+            return newState;
         case DELETE:
             return state.filter( event => event.id !== action.id );
         case DELETE_ALL:
@@ -67,6 +78,13 @@ export const addSubTodo = ( id , item ) => {
         type: ADD_SUB,
         id,
         item
+    }
+}
+
+export const showSubTodo = ( id ) => {
+    return {
+        type: SHOW_SUB_TODO,
+        id
     }
 }
 
