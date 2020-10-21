@@ -23,11 +23,14 @@ const log = ( state = [], action ) => {
             event = { message: `TaskID:${action.id}にSubTodo:「${action.item}」 を追加しました` };
             return [ { id , ...event}　, ...state ];
         case LOG_DELETE_TODO:
-            event = { message: `Todo:「${action.item}」を削除しました` }
+            event = { message: `Todo:「${action.item}」を削除しました` };
+            console.log('TEST');
             return [ { id , ...event } , ...state ];
         case LOG_DELETE_SUB_TODO:
             event = { message: `TaskID:${action.id}のSubTodo:「${action.item}」を削除しました` };
             return [ {id , ...event } , ...state ];
+        case LOG_DELETE_LOG:
+            return state.filter( event => event.id !== action.id);
         case LOG_DELETE_ALL_TODO:
             event = { message : `全てのTodoを削除しました` };
             return [ { id, ...event } , ...state ];
@@ -73,9 +76,10 @@ export const logDeleteAllTodo = () => {
     return{ type:   LOG_DELETE_ALL_TODO };
 }
 
-export const logDeleteLog = ( id ) => {
+export const logDeleteLog = ( item ,id ) => {
     return { 
         type:  LOG_DELETE_LOG,
+        item,
         id 
     };
 }

@@ -18,5 +18,5 @@ export const LOG_ADD_SUB = 'LOG_ADD_SUB';
 export const LOG_DELETE_TODO = 'LOG_DELETE_TODO'; 
 export const LOG_DELETE_SUB_TODO = 'LOG_DELETE_SUB_TODO';
 export const LOG_DELETE_ALL_TODO = 'LOG_DELETE_ALL_TODO';
-export const LOG_DELETE_LOG = 'LOG_DELETE_TODO';
+export const LOG_DELETE_LOG = 'LOG_DELETE_LOG';
 export const LOG_DELETE_ALL_LOG = 'LOG_DELETE_ALL_LOG';
