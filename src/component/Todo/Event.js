@@ -2,7 +2,7 @@ import React , { useContext } from 'react';
 import AppContext from '../../context';
 import { logDeleteTodo } from '../../reducers/LogReducer';
 
-import { deleteTodo , showSubTodo } from '../../reducers/TodoReducer';
+import { deleteTodo , showSubTodo , checked } from '../../reducers/TodoReducer';
 import SubList from './SubList';
 
 
@@ -18,8 +18,10 @@ const Event = ({ event }) => {
         }
     }
 
-    const doChecked = () =>{
-
+    const doChange = e => {
+        let flag = e.target.checked;
+        dispatch( checked( event.id , flag ));
+        console.log( flag );
     }
     
     const doAction = e => {
@@ -30,7 +32,7 @@ const Event = ({ event }) => {
     return(
         <li>
             <div className="flex">
-                <input type="checkbox" onClick={ doChecked }/>{event.item}
+                <input type="checkbox" onChange={ doChange } checked={event.flag}/>{event.item}
                 <div className="flex">
                     <div className="showSubTodo_button" onClick={ doAction }></div>
                     <div className="delete_button" onClick={ doDelete }></div>

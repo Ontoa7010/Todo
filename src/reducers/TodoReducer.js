@@ -1,4 +1,4 @@
-import { ADD , ADD_SUB , DELETE , DELETE_SUB,  DELETE_ALL , CHECKED, SHOW_SUB_TODO } from '../actions';
+import { ADD , ADD_SUB , DELETE , DELETE_SUB,  DELETE_ALL , CHECKED, CHECKED_SUB , SHOW_SUB_TODO } from '../actions';
 
 
 /***********************レデューサー*************************/
@@ -34,7 +34,26 @@ const todo = ( state = [] , action ) => {
             });
             return newState;
         case CHECKED:
-            return state;
+            newState = state.slice();
+            console.log(`id:${action.id} flag:${action.flag} state:` ,state );
+            state.forEach( (value)=> {
+                if(value.id === action.id){
+                    value.flag = action.flag;
+                }
+            });
+            return newState;
+        case CHECKED_SUB:
+            newState = state.slice();
+            state.forEach( (value)=> {
+                if(value.id === action.parId){
+                    value.subList.forEach( (sub) =>{
+                        if(sub.id === action.id){
+                            sub.flag = action.flag;
+                        }
+                    })
+                }
+            });
+            return newState;
         case SHOW_SUB_TODO:
             newState = state.slice();
             newState.forEach( (value) => {
@@ -42,7 +61,6 @@ const todo = ( state = [] , action ) => {
                     value.subListFlag = !value.subListFlag;
                 }
             });
-            console.log( newState );
             return newState;
         case DELETE:
             console.log(state);
@@ -68,6 +86,14 @@ export function addTodo( text ){
         item:   text
     }
 }
+export const addSubTodo = ( id , item ) => {
+    return{
+        type: ADD_SUB,
+        id,
+        item
+    }
+}
+
 export function deleteTodo( text , id ){
     return{
         type:   DELETE,
@@ -89,18 +115,27 @@ export function deleteAllTodo(){
     }
 }
 
-export const addSubTodo = ( id , item ) => {
-    return{
-        type: ADD_SUB,
-        id,
-        item
-    }
-}
-
 export const showSubTodo = ( id ) => {
     return {
         type: SHOW_SUB_TODO,
         id
+    }
+}
+
+export const checked = ( id , flag ) => {
+    return {
+        type:   CHECKED,
+        id,
+        flag
+    }
+}
+
+export const checkedSub = ( id , parId , flag ) => {
+    return {
+        type:   CHECKED_SUB,
+        id,
+        parId,
+        flag
     }
 }
 

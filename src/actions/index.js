@@ -6,6 +6,7 @@ export const DELETE = 'DELETE';
 export const DELETE_SUB = 'DELETE_SUB';
 export const DELETE_ALL = 'DELETE_ALL';
 export const CHECKED = 'CHECKED';
+export const CHECKED_SUB = 'CHECKED_SUB';
 export const SHOW_SUB_TODO = 'SHOW_SUB_TODO';
 export const LOAD_DATA = 'LOAD_DATA';
 export const LOAD_SUB_DATA = 'LOAD_SUB_DATA';
