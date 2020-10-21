@@ -24,7 +24,6 @@ const log = ( state = [], action ) => {
             return [ { id , ...event}　, ...state ];
         case LOG_DELETE_TODO:
             event = { message: `Todo:「${action.item}」を削除しました` };
-            console.log('TEST');
             return [ { id , ...event } , ...state ];
         case LOG_DELETE_SUB_TODO:
             event = { message: `TaskID:${action.id}のSubTodo:「${action.item}」を削除しました` };
