@@ -7,6 +7,24 @@ import Main from './Todo/Main';
 
 import '../css/App.css';
 
+import firebase from 'firebase';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCABthIjRkbNcAYOI6pC8HMHFwVf-tWFcQ",
+    authDomain: "todo-2e4dd.firebaseapp.com",
+    databaseURL: "https://todo-2e4dd.firebaseio.com",
+    projectId: "todo-2e4dd",
+    storageBucket: "todo-2e4dd.appspot.com",
+    messagingSenderId: "244646709560",
+    appId: "1:244646709560:web:d3491121a5821dd67159cd",
+    measurementId: "G-H11N76HN7R"
+};
+
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
+
+const db = firebase.firestore();
+
 
 const App = () => {
     //ローカルストレージに保存する時のキーを設定
