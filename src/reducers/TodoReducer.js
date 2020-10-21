@@ -35,7 +35,6 @@ const todo = ( state = [] , action ) => {
             return newState;
         case CHECKED:
             newState = state.slice();
-            console.log(`id:${action.id} flag:${action.flag} state:` ,state );
             state.forEach( (value)=> {
                 if(value.id === action.id){
                     value.flag = action.flag;

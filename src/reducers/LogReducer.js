@@ -4,7 +4,8 @@ import {
     LOG_DELETE_TODO , 
     LOG_DELETE_ALL_TODO , 
     LOG_DELETE_LOG , 
-    LOG_DELETE_ALL_LOG , 
+    LOG_DELETE_ALL_LOG, 
+    LOG_DELETE_SUB_TODO, 
 } from '../actions';
 
 
@@ -16,21 +17,20 @@ const log = ( state = [], action ) => {
 
     switch( action.type ){
         case LOG_ADD:
-            event = { message: `Todo:「${action.item}」,id:${id} を追加しました` };
+            event = { message: `Todo:「${action.item}」 を追加しました` };
             return [ { id , ...event}　, ...state ];
         case LOG_ADD_SUB:
-            event = { message: `TaskID:${action.id}にSubTodo:「${action.item}」,id:${id} を追加しました` };
+            event = { message: `TaskID:${action.id}にSubTodo:「${action.item}」 を追加しました` };
             return [ { id , ...event}　, ...state ];
-        // case LOG_CHECKED:
-        //     return state;
         case LOG_DELETE_TODO:
-            event = { message: `Todo:「${action.item}」,id:${action.id}を削除しました` }
+            event = { message: `Todo:「${action.item}」を削除しました` }
             return [ { id , ...event } , ...state ];
+        case LOG_DELETE_SUB_TODO:
+            event = { message: `TaskID:${action.id}のSubTodo:「${action.item}」を削除しました` };
+            return [ {id , ...event } , ...state ];
         case LOG_DELETE_ALL_TODO:
             event = { message : `全てのTodoを削除しました` };
             return [ { id, ...event } , ...state ];
-        // case LOG_DELETE_LOG:
-        //     return state;
         case LOG_DELETE_ALL_LOG:
             return [];
         default:
@@ -60,6 +60,15 @@ export const logDeleteTodo = ( item , id ) =>{
         id
     }
 }
+
+export const logDeleteSubTodo = ( id , item ) => {
+    return{
+        type:   LOG_DELETE_SUB_TODO,
+        id,
+        item
+    };
+}
+
 export const logDeleteAllTodo = () => {
     return{ type:   LOG_DELETE_ALL_TODO };
 }

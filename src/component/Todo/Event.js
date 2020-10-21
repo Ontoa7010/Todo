@@ -21,7 +21,6 @@ const Event = ({ event }) => {
     const doChange = e => {
         let flag = e.target.checked;
         dispatch( checked( event.id , flag ));
-        console.log( flag );
     }
     
     const doAction = e => {

@@ -1,5 +1,7 @@
-import React ,{ useContext , useEffect } from 'react';
+import React ,{ useContext } from 'react';
+
 import AppContext from '../../context';
+import { logDeleteSubTodo } from '../../reducers/LogReducer';
 import { deleteSubTodo , checkedSub } from '../../reducers/TodoReducer';
 
 
@@ -20,14 +22,18 @@ const SubList = ({ event }) => {
 
 const SubLists = ({ value , parId }) => {
     const { dispatch } = useContext( AppContext );
+
     const doDelete = () => {
-        dispatch( deleteSubTodo( value.item , value.id ));
+        const result = window.confirm(`本当にSubTask:「${value.item}」を削除してもよろしいですか？`);
+        if(result){
+            dispatch( deleteSubTodo( value.item , value.id ));
+            dispatch( logDeleteSubTodo ( value.id , value.item));
+        }
     }
 
     const doChange = e => {
         let flag = e.target.checked;
         dispatch( checkedSub( value.id , parId, flag ));
-        console.log( flag );
     }
 
     return (
