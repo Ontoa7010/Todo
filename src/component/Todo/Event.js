@@ -7,7 +7,7 @@ import SubList from './SubList';
 
 
 const Event = ({ event }) => {
-    const { dispatch } = useContext( AppContext );    
+    const { dispatch } = useContext( AppContext );  
 
     const doDelete = e =>{
         e.preventDefault();

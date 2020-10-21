@@ -1,4 +1,4 @@
-import { ADD , ADD_SUB , DELETE , DELETE_ALL , CHECKED, SHOW_SUB_TODO } from '../actions';
+import { ADD , ADD_SUB , DELETE , DELETE_SUB,  DELETE_ALL , CHECKED, SHOW_SUB_TODO } from '../actions';
 
 
 /***********************レデューサー*************************/
@@ -22,12 +22,14 @@ const todo = ( state = [] , action ) => {
             newState = state.slice();
             newState.forEach( (value) => {
                 if( value.id === action.id ){
+                    let  subId = value.subList.length === 0 ? 1 : value.subList[value.subList.length -1].id + 1;
                     value.subList.push( {
-                        id,
+                        id:         subId,
                         item:       action.item,
                         date:       '',
                         flag:       false,
                     } );
+                    value.subListFlag = true;
                 }
             });
             return newState;
@@ -43,7 +45,14 @@ const todo = ( state = [] , action ) => {
             console.log( newState );
             return newState;
         case DELETE:
+            console.log(state);
             return state.filter( event => event.id !== action.id );
+        case DELETE_SUB:
+            newState = state.slice();
+            newState.forEach( (value) => {
+                value.subList = value.subList.filter( event => event.id !==action.id);
+            });
+            return newState;
         case DELETE_ALL:
             return [];
 
@@ -62,6 +71,13 @@ export function addTodo( text ){
 export function deleteTodo( text , id ){
     return{
         type:   DELETE,
+        item:   text,
+        id:     id
+    }
+}
+export function deleteSubTodo( text , id ){
+    return{
+        type:   DELETE_SUB,
         item:   text,
         id:     id
     }
