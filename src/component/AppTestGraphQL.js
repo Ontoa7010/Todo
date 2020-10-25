@@ -63,4 +63,4 @@ function AppTestGraphQL() {
     );
 }
 
-export default withAuthenticator(App);
+export default withAuthenticator(AppTestGraphQL);
