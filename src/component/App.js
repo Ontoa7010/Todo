@@ -7,6 +7,10 @@ import Main from './Todo/Main';
 
 import '../css/App.css';
 
+//AWS認証フロー実装用
+import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
+import Amplify from 'aws-amplify';
+
 
 const App = () => {
     //ローカルストレージに保存する時のキーを設定
@@ -37,9 +41,10 @@ const App = () => {
         <AppContext.Provider value={{ state , dispatch }}>
             <Header />
             <Main />
+            <AmplifySignOut />
         </AppContext.Provider>
     );
 }
 
 
-export default App;
+export default withAuthenticator(App);
