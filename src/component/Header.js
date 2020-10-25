@@ -3,7 +3,7 @@ import React from 'react';
 const Header = () => {
     return (
         <header>
-            <h1 className="title">WorkApps</h1>
+            <h1 className="title">ReactApps</h1>
             <nav>
                 <ul>
                     <li>Todoリスト</li>
