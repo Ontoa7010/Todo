@@ -1,32 +1,17 @@
-import firebase from 'firebase';
-import { LOAD_DATA } from '../actions';
+import InitialSetting from './index';
 
-const firebaseConfig = {
-    apiKey: "AIzaSyCABthIjRkbNcAYOI6pC8HMHFwVf-tWFcQ",
-    authDomain: "todo-2e4dd.firebaseapp.com",
-    databaseURL: "https://todo-2e4dd.firebaseio.com",
-    projectId: "todo-2e4dd",
-    storageBucket: "todo-2e4dd.appspot.com",
-    messagingSenderId: "244646709560",
-    appId: "1:244646709560:web:d3491121a5821dd67159cd",
-    measurementId: "G-H11N76HN7R"
-};
+const db = InitialSetting();
 
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
-
-const db = firebase.firestore();
-
-//データベースとのやり取りをする際、非同期処理の調整
+/**************データベースからTodoListを読み取る**************/
 const asynReadDocument = () => {
     return new Promise( (resolve , reject ) => {
         const data = [];
-        // console.log('db:' ,db);
-        let docRef = db.collection("Mytask").get();
+        const docRef = db.collection("posts").get();
         docRef.then( (querySnapshot) => {
             querySnapshot.forEach( (doc) => {
                 // console.log(doc);
-                data.push( doc.data() );
+                console.log( doc.data());
+                data[doc.id] = ( doc.data() );
             });
             if(data != null){
                 resolve(data);
@@ -36,30 +21,14 @@ const asynReadDocument = () => {
         });
     });
 }
-
-//firebaseに格納されているデータを読み取って一覧表示
-// export const readDocument = ({ dispatch }) => {
-//     asynReadDocument().then( 
-//         (value) => {
-//             dispatch({ type: LOAD_DATA , data: value });
-//         },
-//         (value)=>{
-//             console.log(`error:${value}`);
-//         }
-//     );
-// }
-
-
-//サブコレクションのデータを取得する
-const asynReadSubDocument = (id) => {
+const asynReadDocument2 = () => {
     return new Promise( (resolve , reject ) => {
         const data = [];
-        // console.log('db:' ,db);
-        let docRef = db.collection("Mytask").doc(`${id}`).collection('SubTask').get();
+        const docRef = db.collection("posts").get();
         docRef.then( (querySnapshot) => {
             querySnapshot.forEach( (doc) => {
                 // console.log(doc);
-                data.push( doc.data() );
+                data[doc.id] = ( doc.data() );
             });
             if(data != null){
                 resolve(data);
@@ -70,24 +39,26 @@ const asynReadSubDocument = (id) => {
     });
 }
 
-export const readSubCollection = ({ dispatch , id })=>{
-    asynReadDocument( id ).then( 
-        ( value ) => {
-            dispatch({ type: LOAD_DATA , data: value });
-            console.log(value);
+// firebaseに格納されているデータを読み取って一覧表示
+export const readDocument = () => {
+    asynReadDocument().then( 
+        (value) => {
+            // dispatch({ type: LOAD_DATA , data: value });
+            console.log(`value:`,value);
         },
-        ( value )=>{
+        (value)=>{
             console.log(`error:${value}`);
         }
     );
 }
 
-
 //firebaseに新しいドキュメントを追加
-const addDocument = (item, id) =>{
-    db.collection("Mytask").doc(`${id}`).set({
-        id,
-        item,
+const addDocument = ( body , flag ) =>{
+    const ref = db.collection("users").doc("minase");
+    db.collection("posts").doc(body).set()({
+        body,
+        flag,
+        userRef:ref
     }).then( (docRef) => {
         console.log("Document written with ID:" , docRef.id);
     }).catch( (error) =>{
@@ -95,26 +66,14 @@ const addDocument = (item, id) =>{
     })
 }
 
-//ドキュメントを削除する関数
-export const deleteDocument = (item , id) =>{
-    db.collection("Mytask").doc(`${id}`).delete().then( (docRef) => {
-        console.log("Document delete with ID:" , docRef.id);
-    }).catch( (error) =>{
-        console.error("Error delete document: " , error);
-    })
-}
+export const addSubCollection = () => {
+    // db.collection("posts").doc("test").update({
+    //     flag:false
+    // });
 
-//サブコレクションにドキュメントを追加すす
-export const addSubDocument = () => {
-    db.collection('Mytask').doc('6').collection('SubTask').doc('0').set({
-        id: 0,
-        item: 'SubTask',
-    }).then( (docRef) => {
-        console.log("Document written with ID:" , docRef.id);
-    }).catch( (error) =>{
-        console.error("Error adding document: " , error);
-    })
+    db.collection("posts").doc("test").collection("SubList").add({
+        body:"サブコレクションを追加してみた"
+    });
 }
-
 
 export default addDocument;

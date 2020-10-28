@@ -5,6 +5,8 @@ import reducer from '../reducers';
 import Header from './Header';
 import Main from './Todo/Main';
 
+import addDocument , { readDocument , addSubCollection } from '../database/Data';
+
 import '../css/App.css';
 
 
@@ -32,6 +34,13 @@ const App = () => {
         //ローカルストレージに保存
         localStorage.setItem( APP_KEY , string );
     }, [state]);
+
+
+    useEffect( ()=>{
+        // addDocument('アイウエオ', 'あいうえお');
+        addSubCollection();
+        readDocument();
+    },[]);
 
     return (
         <AppContext.Provider value={{ state , dispatch }}>

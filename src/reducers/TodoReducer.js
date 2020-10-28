@@ -1,4 +1,5 @@
 import { ADD , ADD_SUB , DELETE , DELETE_SUB,  DELETE_ALL , CHECKED, CHECKED_SUB , SHOW_SUB_TODO } from '../actions';
+import addDocument from '../database/Data';
 
 
 /***********************レデューサー*************************/
@@ -17,6 +18,7 @@ const todo = ( state = [] , action ) => {
                 subListFlag:    true,
                 subList:    []
             }
+            addDocument( action.item , true );
             return [...state , {...event}];
         case ADD_SUB:
             newState = state.slice();
