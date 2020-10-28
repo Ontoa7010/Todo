@@ -1,13 +1,18 @@
-import React , { useContext } from 'react';
+import React , { useContext , useEffect } from 'react';
 import AppContext from '../../context';
+import { readDocument } from '../../database/Data';
+
 
 import Event from './Event';
 
-const TodoList = () => {
-    const { state } = useContext( AppContext );
+const TodoListDB = () => {
+    const { state , dispatch } = useContext( AppContext );
+    useEffect(()=>{
+        readDocument( {dispatch} );
+    },[]);
     return(
         <div className="TodoList">
-            <ul>
+            {/* <ul>
             { 
                 state.todo.map( (event , index) => {
                         return(
@@ -15,9 +20,9 @@ const TodoList = () => {
                         );
                     })
             }
-            </ul>
+            </ul> */}
         </div>
     );
 }
 
-export default TodoList;
+export default TodoListDB;

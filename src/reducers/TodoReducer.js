@@ -1,5 +1,5 @@
-import { ADD , ADD_SUB , DELETE , DELETE_SUB,  DELETE_ALL , CHECKED, CHECKED_SUB , SHOW_SUB_TODO } from '../actions';
-import addDocument from '../database/Data';
+import { ADD , ADD_SUB , DELETE , DELETE_SUB,  DELETE_ALL , CHECKED, CHECKED_SUB , SHOW_SUB_TODO, LOAD_DATA } from '../actions';
+import addDocument , { addSubDocument } from '../database/Data';
 
 
 /***********************レデューサー*************************/
@@ -18,7 +18,7 @@ const todo = ( state = [] , action ) => {
                 subListFlag:    true,
                 subList:    []
             }
-            addDocument( action.item , true );
+            addSubDocument( action.item , true );
             return [...state , {...event}];
         case ADD_SUB:
             newState = state.slice();
@@ -74,7 +74,9 @@ const todo = ( state = [] , action ) => {
             return newState;
         case DELETE_ALL:
             return [];
-
+        case LOAD_DATA:
+            console.log( "Data:", action.data);
+            return [ ...action.data ];
         default:
             return state;
     }

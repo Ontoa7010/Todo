@@ -11,11 +11,11 @@ const SubList = ({ event }) => {
 
     return(
         <ul style={ style }>
-            {
+            {/* {
                 event.subList.map(( value , index )=>(
                     <SubLists value={ value } key={ index } parId={event.id}/>
                 ))
-            }
+            } */}
         </ul>
     );
 }

@@ -28,10 +28,11 @@ const Event = ({ event }) => {
         dispatch( showSubTodo( event.id ));
         // console.log('Clicked button!');
     }
+
     return(
         <li>
             <div className="flex">
-                <input type="checkbox" onChange={ doChange } checked={event.flag}/>{event.item}
+                <input type="checkbox" onChange={ doChange } checked={event.flag}/>{event.body}
                 <div className="flex">
                     <div className="showSubTodo_button" onClick={ doAction }></div>
                     <div className="delete_button" onClick={ doDelete }></div>
