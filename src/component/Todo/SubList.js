@@ -1,46 +1,56 @@
-import React ,{ useContext } from 'react';
+import React ,{ useContext , useState } from 'react';
 
+import Elements from './Elements';
 import AppContext from '../../context';
-import { logDeleteSubTodo } from '../../reducers/LogReducer';
-import { deleteSubTodo , checkedSub } from '../../reducers/TodoReducer';
 
+import { addSubTodo } from '../../reducers/TodoActionCreaters';
+import { logAddSubTodo } from '../../reducers/LogReducer';
+import { addSubList } from '../../database/Data';
 
 const SubList = ({ event }) => {
+    const { dispatch } = useContext(AppContext);
 
-    let style = event.subListFlag ? { display: "block" } : { display: "none" };
+    const [ body , setBody ] = useState('');
+
+    //サブアイテム用：フォームに文字が入力された時の挙動
+    const doChange = e => {
+        e.preventDefault();
+        setBody(e.target.value);
+    }
+
+    //サブタスクを追加するボタンを押された時の挙動
+    const doAddSubTodo = e => {
+        e.preventDefault();
+        const  arrayId = event.subList.length === 0 ? 1 : event.subList[event.subList.length -1].id + 1;
+        const insertData = {
+            id:             arrayId,
+            body,
+            checkedFlag:    false,
+            date:           ''
+        }
+        console.log(insertData);
+        addSubList( event.id ,insertData ); 
+        dispatch( addSubTodo( event.id , insertData ) );
+        dispatch( logAddSubTodo( event.id , body ) );
+    }
+
+    const style = event.showListFlag ? { display: "block" } : { display: "none" };
+    const addSubFlag = body === '' ? true : false;
 
     return(
-        <ul style={ style }>
-            {/* {
+        <>
+            <form>サブタスクを追加：
+                <input type="text" className="addSubTodo" onChange={ doChange }/>
+                <input type="submit" value="追加" onClick={ doAddSubTodo } disabled={ addSubFlag }/>
+            </form>
+            <ul style={ style }>
+            {
                 event.subList.map(( value , index )=>(
-                    <SubLists value={ value } key={ index } parId={event.id}/>
+                    <Elements value={ value } key={ index } docId={event.id}/>
                 ))
-            } */}
+            }
         </ul>
-    );
-}
-
-const SubLists = ({ value , parId }) => {
-    const { dispatch } = useContext( AppContext );
-
-    const doDelete = () => {
-        const result = window.confirm(`本当にSubTask:「${value.item}」を削除してもよろしいですか？`);
-        if(result){
-            dispatch( deleteSubTodo( value.item , value.id ));
-            dispatch( logDeleteSubTodo ( value.id , value.item));
-        }
-    }
-
-    const doChange = e => {
-        let flag = e.target.checked;
-        dispatch( checkedSub( value.id , parId, flag ));
-    }
-
-    return (
-        <li > 
-            <input type="checkbox" onChange={ doChange } checked={value.flag}/>{value.item}
-            <div className="sub_delete_button" onClick={doDelete}></div>
-        </li>
+        </>
     );
 }
 

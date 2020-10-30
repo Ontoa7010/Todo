@@ -1,6 +1,5 @@
 import InitialSetting from './index';
-import React , { useEffect , useCotext } from 'react';
-import AppContext from '../context';
+import firebase from 'firebase';
 import { LOAD_DATA } from '../actions';
 
 
@@ -10,8 +9,8 @@ const db = InitialSetting();
 const asynReadDocument = () => {
     return new Promise( (resolve , reject ) => {
         const data = [];
-        const docRef = db.collection("Label").doc("Test").collection("title").get();
-
+        const docRef = db.collection("Label").doc("Test").collection("MyTask").get();
+        console.log(docRef);
         docRef.then( (querySnapshot) => {
             querySnapshot.forEach( (doc) => {
                 const insertData = { id:doc.id ,...doc.data() };
@@ -30,7 +29,6 @@ const asynReadDocument = () => {
 export const readDocument = ({ dispatch }) => {
     asynReadDocument().then( 
         (value) => {
-            // console.log(`value:`,value);
             dispatch({ type: LOAD_DATA , data:value});
         },
         (value)=>{
@@ -40,20 +38,59 @@ export const readDocument = ({ dispatch }) => {
 }
 
 //firebaseに新しいドキュメントを追加
-const addDocument = ( body , flag ) =>{
-    const userRef = db.collection("users").doc("minase");
-    db.collection("Label").doc("Test").collection("title").add({
-        body,
-        flag,
-        userRef:userRef
+const insertDocument = ( title ) =>{
+    return new Promise( (resolve , reject )=> {
+        db.collection("Label").doc("Test").collection("MyTask").add({
+            title,
+            checkedFlag:    false,
+            showListFlag:   true,
+            subList:        [],
+            date:           ''
+        }).then( (docRef)=>{
+            resolve(docRef.id);
+        }).catch( (error)=>{
+            resolve(error);
+        });
+    })
+}
+
+const addDocument = async ( title )=>{
+    return await insertDocument( title );
+}
+
+//firebaseのドキュメントを削除する
+export const deleteDocument = ( docId )=>{
+    db.collection("Label").doc("Test").collection("MyTask").doc(docId).delete().then(()=>{
+        console.log(`delete document docId(${docId}) complete!`);
     });
 }
 
-//firebaseにサブコレクションにドキュメントを追加
-export const addSubDocument = (body , flag) => {
-    db.collection("Label").doc("Test").collection("title").doc("emyXPeRm8qyDLemqKzPB").collection("SubList").add({
-        body:"サブコレクションを追加してみた"
+//firebaseのドキュメントを更新する
+export const updateDocument = ( docId , data ) =>{
+    db.collection("Label").doc("Test").collection("MyTask").doc(docId).update(data);
+}
+
+//firebaseにサブリストにドキュメントを追加
+export const addSubList = ( docId , data ) => {
+    db.collection("Label").doc("Test").collection("MyTask").doc(docId).update({
+        subList: firebase.firestore.FieldValue.arrayUnion(data)
+    }).then(()=>{
+        console.log(`add subList complete!`);
+    }).catch( ( error )=>{
+        console.log( error );
     });
 }
+
+//firebaseのサブリストの要素を更新
+export const updateSubList = ( docId , data )=>{
+    db.collection("Label").doc("Test").collection("MyTask").doc(docId).update({
+        subList: data
+    }).then(()=>{
+        console.log(`update subList complete!`);
+    }).catch( ( error )=>{
+        console.log( error );
+    });
+}
+
 
 export default addDocument;

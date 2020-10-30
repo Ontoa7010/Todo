@@ -1,17 +1,25 @@
-import React from 'react';
+import React , { useContext , useEffect } from 'react';
 
 import Form from './Form';
 import Logs from './Logs';
 import TodoList from './TodoList';
-import TodoListDB from './TodoListDB';
+
+import AppContext from '../../context';
+import { readDocument } from '../../database/Data';
 
 const Main = () =>{
+
+    const { dispatch }  = useContext( AppContext );
+
+    useEffect(()=>{
+        readDocument({dispatch});
+    },[]);
+
     return(
         <div id="main">
             <h2>TodoList</h2>
             <Form />
             <TodoList />
-            <TodoListDB />
             <Logs />
         </div>
     );

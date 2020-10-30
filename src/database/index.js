@@ -1,5 +1,4 @@
 import firebase from 'firebase';
-// import { LOAD_DATA } from '../actions';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCABthIjRkbNcAYOI6pC8HMHFwVf-tWFcQ",

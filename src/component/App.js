@@ -4,7 +4,6 @@ import reducer from '../reducers';
 
 import Header from './Header';
 import Main from './Todo/Main';
-import { readDocument } from '../database/Data';
 
 import '../css/App.css';
 

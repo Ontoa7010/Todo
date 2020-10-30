@@ -2,37 +2,42 @@ import React , { useContext } from 'react';
 import AppContext from '../../context';
 import { logDeleteTodo } from '../../reducers/LogReducer';
 
-import { deleteTodo , showSubTodo , checked } from '../../reducers/TodoReducer';
+import { deleteTodo , showSubTodo , checked } from '../../reducers/TodoActionCreaters';
 import SubList from './SubList';
+import { deleteDocument } from '../../database/Data';
 
 
 const Event = ({ event }) => {
     const { dispatch } = useContext( AppContext );  
 
+    //削除ボタンが押されたときの挙動
     const doDelete = e =>{
         e.preventDefault();
         const result = window.confirm(`${event.item}を本当に削除しますか？`);
         if( result ){
+            deleteDocument( event.id );
             dispatch( deleteTodo( event.item , event.id ));
             dispatch( logDeleteTodo( event.item , event.id ));
         }
     }
 
+    //チェックボタンが押されたときの挙動
     const doChange = e => {
-        let flag = e.target.checked;
-        dispatch( checked( event.id , flag ));
+        const checkedFlag = e.target.checked;
+        console.log(`event.id:${event.id}`);
+        dispatch( checked( event.id , checkedFlag ));
     }
     
+    //プルボタンが押されたときの挙動
     const doAction = e => {
         e.preventDefault();
         dispatch( showSubTodo( event.id ));
-        // console.log('Clicked button!');
     }
 
     return(
         <li>
             <div className="flex">
-                <input type="checkbox" onChange={ doChange } checked={event.flag}/>{event.body}
+                <input type="checkbox" onChange={ doChange } checked={event.checkedFlag}/>{event.title}
                 <div className="flex">
                     <div className="showSubTodo_button" onClick={ doAction }></div>
                     <div className="delete_button" onClick={ doDelete }></div>
