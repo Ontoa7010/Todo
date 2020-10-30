@@ -32,15 +32,18 @@ const SubList = ({ event }) => {
         addSubList( event.id ,insertData ); 
         dispatch( addSubTodo( event.id , insertData ) );
         dispatch( logAddSubTodo( event.id , body ) );
+        const form = document.getElementById(event.id).value = '';
+        console.log(form);
     }
 
     const style = event.showListFlag ? { display: "block" } : { display: "none" };
     const addSubFlag = body === '' ? true : false;
 
+
     return(
         <>
             <form>サブタスクを追加：
-                <input type="text" className="addSubTodo" onChange={ doChange }/>
+                <input type="text" id={event.id} onChange={ doChange }/>
                 <input type="submit" value="追加" onClick={ doAddSubTodo } disabled={ addSubFlag }/>
             </form>
             <ul style={ style }>

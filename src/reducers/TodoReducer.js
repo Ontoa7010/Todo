@@ -27,12 +27,9 @@ const todo = ( state = [] , action ) => {
             return newState;
         case CHECKED:
             newState = state.slice();
-            console.log(`newState:`,newState);
             newState.forEach( (value)=> {
                 if(value.id === action.docId){
-                    console.log(`${value.id} ${action.docId}`);
                     value.checkedFlag = action.checkedFlag;
-                    console.log( 'value',value );
                     updateDocument( action.docId , value );
                 }
             });
@@ -59,7 +56,6 @@ const todo = ( state = [] , action ) => {
             });
             return newState;
         case DELETE:
-            console.log(state);
             return state.filter( event => event.id !== action.id );
         case DELETE_SUB:
             newState = state.slice();

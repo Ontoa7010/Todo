@@ -10,7 +10,6 @@ const asynReadDocument = () => {
     return new Promise( (resolve , reject ) => {
         const data = [];
         const docRef = db.collection("Label").doc("Test").collection("MyTask").get();
-        console.log(docRef);
         docRef.then( (querySnapshot) => {
             querySnapshot.forEach( (doc) => {
                 const insertData = { id:doc.id ,...doc.data() };

@@ -21,6 +21,8 @@ const Form = () =>{
         const docId = await addDocument( title );
         dispatch( addTodo( docId , title ) );
         dispatch( logAddTodo( docId , title ));
+        //フォームの内容を初期化
+        document.getElementById('addTodo').value = '';
     }
 
     //全てのTodoリストを削除するボタンを押された時の挙動
