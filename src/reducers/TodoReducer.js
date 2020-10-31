@@ -30,7 +30,7 @@ const todo = ( state = [] , action ) => {
             newState.forEach( (value)=> {
                 if(value.id === action.docId){
                     value.checkedFlag = action.checkedFlag;
-                    updateDocument( action.docId , value );
+                    updateDocument( action.docId , "Test" , value );
                 }
             });
             return newState;
@@ -43,7 +43,7 @@ const todo = ( state = [] , action ) => {
                             element.checkedFlag = action.checkedFlag;
                         }
                     })
-                    updateSubList( action.docId , value.subList);
+                    updateSubList( action.docId , "Test" , value.subList);
                 }
             });
             return newState;
@@ -56,20 +56,21 @@ const todo = ( state = [] , action ) => {
             });
             return newState;
         case DELETE:
+            deleteDocument( action.id , "Test" );
             return state.filter( event => event.id !== action.id );
         case DELETE_SUB:
             newState = state.slice();
             newState.forEach( (value) => {
                 if(value.id === action.docId ){
                     value.subList = value.subList.filter( event => event.id !==action.arrayId);
-                    updateSubList( action.docId , value.subList );
+                    updateSubList( action.docId ,"Test", value.subList );
                 }
                 
             });
             return newState;
         case DELETE_ALL:
             state.forEach( (value)=>{
-                deleteDocument( value.id );
+                deleteDocument( value.id , "Test" );
             });
             return [];
         case LOAD_DATA:

@@ -2,27 +2,41 @@ import React , { useState , useContext } from 'react';
 import AppContext from '../../context';
 
 import addTodo , { deleteAllTodo } from '../../reducers/TodoActionCreaters';
-import { logAddTodo , logDeleteAllTodo , logDeleteAllLog } from '../../reducers/LogReducer';
-import addDocument from '../../database/Data';
+import { logAddTodo , logDeleteAllTodo } from '../../reducers/LogReducer';
+import addDocument , { addLabel } from '../../database/Data';
 
 const Form = () =>{
     const { state , dispatch } = useContext( AppContext );
     const [ title , setTitle ] = useState('');
+    const [ labelName , setLabelName ] = useState('');
 
-    //フォームに文字が入力された時の挙動
-    const doChange = e => {
+    //Todo追加フォームに文字が入力された時の挙動
+    const doChangeTodo = e => {
         e.preventDefault();
         setTitle(e.target.value);
     }
 
-    //追加ボタンを押されたときの挙動
+    //ラベル追加フォームに文字が入力されたときの挙動
+    const doChangeLabel = e => {
+        e.preventDefault();
+        setLabelName(e.target.value);
+    }
+
+    //Todo追加フォームの追加ボタンを押されたときの挙動
     const doAddTodo = async e =>{
         e.preventDefault();
-        const docId = await addDocument( title );
+        const docId = await addDocument( title , "Test" );
         dispatch( addTodo( docId , title ) );
         dispatch( logAddTodo( docId , title ));
         //フォームの内容を初期化
         document.getElementById('addTodo').value = '';
+    }
+
+    //新しいラベルを追加
+    const doAddLabel = e =>{
+        e.preventDefault();
+        addLabel( labelName );
+        document.getElementById('addLabel').value = '';
     }
 
     //全てのTodoリストを削除するボタンを押された時の挙動
@@ -35,27 +49,23 @@ const Form = () =>{
         }
     }
 
-    //全てのログを削除するボタンを押された時の挙動
-    const doLogAllDelete = e => {
-        e.preventDefault();
-        const result = window.confirm('本当に全てのログを削除しますか？');
-        if( result ) {
-            dispatch( logDeleteAllLog() );
-        }
-    }
-    
     //ボタンを押せるかどうかを判定する変数の宣言
-    const addFlag = title === '' ? true : false;
+    const addTodoFlag = title === '' ? true : false;
+    const addLabelFlag = labelName === '' ? true : false;
     const allDeleteTodoFlag = state.todo.length === 0 ? true : false;
-    const allDeleteLogFlag = state.log.length === 0 ? true : false;
 
     return(
-        <form className="todoForm">
-            <input type="text" id="addTodo" onChange={ doChange }/>
-            <input type="submit" value="追加" onClick={ doAddTodo } disabled={ addFlag }/>
-            <input type="submit" value="全てのTodoを削除する" onClick={ doAllDelete } disabled={ allDeleteTodoFlag }/>
-            <input type="submit" value="全てのログを削除する" onClick={ doLogAllDelete } disabled={ allDeleteLogFlag }/><br />
-        </form>
+        <>
+            <form>ラベルの追加：
+                <input type="text" id="addLabel" onChange={ doChangeLabel }/>
+                <input type="submit" value="追加" onClick={doAddLabel} dispatch={addLabelFlag} />
+            </form><br />
+            <form className="todoForm">Taskの追加
+                <input type="text" id="addTodo" onChange={ doChangeTodo }/>
+                <input type="submit" value="追加" onClick={ doAddTodo } disabled={ addTodoFlag }/>
+                <input type="submit" value="AllDelete" onClick={ doAllDelete } disabled={ allDeleteTodoFlag }/><br/>
+            </form>
+        </>
     );
 
 }

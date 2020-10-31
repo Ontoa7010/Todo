@@ -29,7 +29,7 @@ const SubList = ({ event }) => {
             date:           ''
         }
         console.log(insertData);
-        addSubList( event.id ,insertData ); 
+        addSubList( event.id , "Test" ,insertData ); 
         dispatch( addSubTodo( event.id , insertData ) );
         dispatch( logAddSubTodo( event.id , body ) );
         const form = document.getElementById(event.id).value = '';

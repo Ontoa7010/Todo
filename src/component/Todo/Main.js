@@ -12,7 +12,7 @@ const Main = () =>{
     const { dispatch }  = useContext( AppContext );
 
     useEffect(()=>{
-        readDocument({dispatch});
+        readDocument({dispatch} , "Test");
     },[]);
 
     return(

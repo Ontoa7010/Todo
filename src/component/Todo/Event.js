@@ -4,7 +4,6 @@ import { logDeleteTodo } from '../../reducers/LogReducer';
 
 import { deleteTodo , showSubTodo , checked } from '../../reducers/TodoActionCreaters';
 import SubList from './SubList';
-import { deleteDocument } from '../../database/Data';
 
 
 const Event = ({ event }) => {
@@ -15,7 +14,6 @@ const Event = ({ event }) => {
         e.preventDefault();
         const result = window.confirm(`${event.item}を本当に削除しますか？`);
         if( result ){
-            deleteDocument( event.id );
             dispatch( deleteTodo( event.item , event.id ));
             dispatch( logDeleteTodo( event.item , event.id ));
         }
