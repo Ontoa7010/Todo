@@ -12,8 +12,9 @@ const App = () => {
 
     //ステートの値を設定
     const initialState = {
-        todo: [],
-        log: []
+        todo:   [],
+        log:    [],
+        label:  []
     };
 
     //レデューサーの設定

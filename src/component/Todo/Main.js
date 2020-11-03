@@ -5,14 +5,14 @@ import Logs from './Logs';
 import TodoList from './TodoList';
 
 import AppContext from '../../context';
-import { readDocument } from '../../database/Data';
+import { readDocument , readLabel , testReadDocument } from '../../database/Data';
 
 const Main = () =>{
 
-    const { dispatch }  = useContext( AppContext );
+    const { dispatch , state }  = useContext( AppContext );
 
-    useEffect(()=>{
-        readDocument({dispatch} , "Test");
+    useEffect( ()=>{
+        readLabel( {dispatch} );
     },[]);
 
     return(

@@ -3,7 +3,7 @@ import AppContext from '../../context';
 
 import addTodo , { deleteAllTodo } from '../../reducers/TodoActionCreaters';
 import { logAddTodo , logDeleteAllTodo } from '../../reducers/LogReducer';
-import addDocument , { addLabel } from '../../database/Data';
+import addDocument , { addLabel ,addTask } from '../../database/Data';
 
 const Form = () =>{
     const { state , dispatch } = useContext( AppContext );
@@ -20,12 +20,14 @@ const Form = () =>{
     const doChangeLabel = e => {
         e.preventDefault();
         setLabelName(e.target.value);
+
     }
 
     //Todo追加フォームの追加ボタンを押されたときの挙動
     const doAddTodo = async e =>{
         e.preventDefault();
-        const docId = await addDocument( title , "Test" );
+        const docId = await addTask( title , state.todo.labelId ,  );
+        console.log(`doc.id:${docId}`); 
         dispatch( addTodo( docId , title ) );
         dispatch( logAddTodo( docId , title ));
         //フォームの内容を初期化
@@ -58,7 +60,7 @@ const Form = () =>{
         <>
             <form>ラベルの追加：
                 <input type="text" id="addLabel" onChange={ doChangeLabel }/>
-                <input type="submit" value="追加" onClick={doAddLabel} dispatch={addLabelFlag} />
+                <input type="submit" value="追加" onClick={doAddLabel} disabled={addLabelFlag} />
             </form><br />
             <form className="todoForm">Taskの追加
                 <input type="text" id="addTodo" onChange={ doChangeTodo }/>

@@ -20,3 +20,7 @@ export const LOG_DELETE_SUB_TODO = 'LOG_DELETE_SUB_TODO';
 export const LOG_DELETE_ALL_TODO = 'LOG_DELETE_ALL_TODO';
 export const LOG_DELETE_LOG = 'LOG_DELETE_LOG';
 export const LOG_DELETE_ALL_LOG = 'LOG_DELETE_ALL_LOG';
+
+//Labelの一覧を取得するアクション
+
+export const LOAD_LABEL = 'LOAD_LABEL';

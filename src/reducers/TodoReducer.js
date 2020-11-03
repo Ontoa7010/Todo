@@ -1,5 +1,5 @@
 import { ADD , ADD_SUB , DELETE , DELETE_SUB,  DELETE_ALL , CHECKED, CHECKED_SUB , SHOW_SUB_TODO, LOAD_DATA } from '../actions';
-import { updateSubList , deleteDocument ,updateDocument } from '../database/Data';
+import { updateSubList , deleteDocument ,updateDocument , deleteLabel } from '../database/Data';
 
 
 /***********************レデューサー*************************/
@@ -74,7 +74,8 @@ const todo = ( state = [] , action ) => {
             });
             return [];
         case LOAD_DATA:
-            return [ ...action.data ];
+            // console.log('action.data:',action.data);
+            return [ ...state, {...action.data}];
         default:
             return state;
     }
