@@ -3,13 +3,13 @@ import AppContext from '../../context';
 
 import addTodo , { deleteAllTodo } from '../../reducers/TodoActionCreaters';
 import { logAddTodo , logDeleteAllTodo } from '../../reducers/LogReducer';
-import addDocument , { addLabel ,addTask } from '../../database/Data';
+import { addTask } from '../../database/Data';
 
 const Form = ({labelId}) =>{
     const addTodoIdName = 'addTodo' + labelId;
     const { state , dispatch } = useContext( AppContext );
     const [ title , setTitle ] = useState('');
-    const [ labelName , setLabelName ] = useState('');
+
 
     //Todo追加フォームに文字が入力された時の挙動
     const doChangeTodo = e => {
@@ -17,11 +17,7 @@ const Form = ({labelId}) =>{
         setTitle(e.target.value);
     }
 
-    //ラベル追加フォームに文字が入力されたときの挙動
-    const doChangeLabel = e => {
-        e.preventDefault();
-        setLabelName(e.target.value);
-    }
+
 
     //Todo追加フォームの追加ボタンを押されたときの挙動
     const doAddTodo = async e =>{
@@ -31,13 +27,6 @@ const Form = ({labelId}) =>{
         dispatch( logAddTodo( id.docId , title ));
         //フォームの内容を初期化
         document.getElementsByClassName(addTodoIdName).item(0).value = '';
-    }
-
-    //新しいラベルを追加
-    const doAddLabel = e =>{
-        e.preventDefault();
-        addLabel( labelName );
-        document.getElementById(labelName).value = '';
     }
 
     //全てのTodoリストを削除するボタンを押された時の挙動
@@ -52,21 +41,14 @@ const Form = ({labelId}) =>{
 
     //ボタンを押せるかどうかを判定する変数の宣言
     const addTodoFlag = title === '' ? true : false;
-    const addLabelFlag = labelName === '' ? true : false;
     const allDeleteTodoFlag = state.todo.length === 0 ? true : false;
 
     return(
-        <>
-            <form>ラベルの追加：
-                <input type="text" id={labelId} onChange={ doChangeLabel }/>
-                <input type="submit" value="追加" onClick={doAddLabel} disabled={addLabelFlag} />
-            </form><br />
-            <form className="todoForm">Taskの追加
-                <input type="text" className={addTodoIdName} onChange={ doChangeTodo }/>
-                <input type="submit" value="追加" onClick={ doAddTodo } disabled={ addTodoFlag }/>
-                <input type="submit" value="AllDelete" onClick={ doAllDelete } disabled={ allDeleteTodoFlag }/><br/>
-            </form>
-        </>
+        <form className="todoForm">Taskの追加
+            <input type="text" className={addTodoIdName} onChange={ doChangeTodo }/>
+            <input type="submit" value="追加" onClick={ doAddTodo } disabled={ addTodoFlag }/>
+            <input type="submit" value="AllDelete" onClick={ doAllDelete } disabled={ allDeleteTodoFlag }/><br/>
+        </form>
     );
 
 }
