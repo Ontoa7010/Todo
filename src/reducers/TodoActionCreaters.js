@@ -1,11 +1,12 @@
 import { ADD , ADD_SUB , DELETE_TASK , DELETE_TODO, DELETE_SUB,  DELETE_ALL , CHECKED, CHECKED_SUB , SHOW_SUB_TODO, LOAD_DATA } from '../actions';
 /*********************アクションクリエーター******************/
 
-const addTodo = ( docId ,myTaskId, title) =>{
+const addTodo = ( docId ,myTaskId, labelId, title) =>{
     return{
         type:   ADD,
         docId,
         myTaskId,
+        labelId,
         title
     }
 }

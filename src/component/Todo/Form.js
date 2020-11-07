@@ -5,7 +5,7 @@ import addTodo , { deleteAllTodo } from '../../reducers/TodoActionCreaters';
 import { logAddTodo , logDeleteAllTodo } from '../../reducers/LogReducer';
 import addDocument , { addLabel ,addTask } from '../../database/Data';
 
-const Form = () =>{
+const Form = ({labelId}) =>{
     const { state , dispatch } = useContext( AppContext );
     const [ title , setTitle ] = useState('');
     const [ labelName , setLabelName ] = useState('');
@@ -20,15 +20,13 @@ const Form = () =>{
     const doChangeLabel = e => {
         e.preventDefault();
         setLabelName(e.target.value);
-
     }
 
     //Todo追加フォームの追加ボタンを押されたときの挙動
     const doAddTodo = async e =>{
         e.preventDefault();
         const id = await addTask( title  );
-        // console.log(`doc.id:${docId}`); 
-        dispatch( addTodo( id.docId , id.myTaskId ,title ) );
+        dispatch( addTodo( id.docId , id.myTaskId , labelId, title ) );
         dispatch( logAddTodo( id.docId , title ));
         //フォームの内容を初期化
         document.getElementById('addTodo').value = '';

@@ -11,7 +11,7 @@ const todo = ( state = [] , action ) => {
         case ADD:
             const event = { 
                 title:      action.title,
-                labelId:    '',
+                labelId:    action.labelId,
                 myTaskId:   action.myTaskId,
                 myTask:  [],
             }

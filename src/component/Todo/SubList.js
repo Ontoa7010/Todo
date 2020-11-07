@@ -57,9 +57,9 @@ const SubList = ({ event , myTaskId , labelId }) => {
         document.getElementById( event.id ).value = '';
     }
 
-    // useEffect(()=>{
-    //     console.log( event );
-    // },[])
+    useEffect(()=>{
+        console.log( event );
+    },[])
 
     const style = event.showListFlag ? { display: "block" } : { display: "none" };
     const addSubFlag = body === '' ? true : false;
