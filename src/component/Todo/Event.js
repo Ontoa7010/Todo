@@ -1,62 +1,63 @@
-import React , { useContext , useEffect } from 'react';
+import React , { useContext ,useState , useEffect } from 'react';
 import AppContext from '../../context';
-import { logDeleteTodo } from '../../reducers/LogReducer';
 
-import { deleteTodo , showSubTodo , checked } from '../../reducers/TodoActionCreaters';
 import SubList from './SubList';
+import addDocument , { deleteTaskDB } from '../../database/Data';
+import { deleteTask  } from '../../reducers/TodoActionCreaters';
 
 
 const Event = ({ event }) => {
-    const { dispatch } = useContext( AppContext );  
+    const { dispatch , state } = useContext( AppContext );  
+    const [ subTitle , setSubTitle ] = useState('');
+
+    //サブタイトルのフォームに文字が入力された時ステートに保存
+    const doSubTitleChange = e =>{
+        e.preventDefault();
+        setSubTitle( e.target.value );
+    }
+
+    //作成ボタンが押されたときの挙動
+    const doAddTodo = async e =>{
+        e.preventDefault();
+        const docId = await addDocument( subTitle, event.myTaskId );
+        dispatch({type:'ADD_TODO' , docId , subTitle , myTaskId:event.myTaskId });
+        document.getElementById('addSubTodo').value = '';
+    }
 
     //削除ボタンが押されたときの挙動
-    const doDelete = e =>{
+    const doDelete = async e=>{
         e.preventDefault();
-        const result = window.confirm(`${event.item}を本当に削除しますか？`);
-        if( result ){
-            dispatch( deleteTodo( event.item , event.id ));
-            dispatch( logDeleteTodo( event.item , event.id ));
-        }
+        state.label.forEach((value)=>{
+            if(value.labelId === event.labelId){
+                deleteTaskDB( event );
+            }
+        })
+        dispatch( deleteTask(event.myTaskId));
     }
 
-    //チェックボタンが押されたときの挙動
-    const doChange = e => {
-        const checkedFlag = e.target.checked;
-        console.log(`event.id:${event.id}`);
-        dispatch( checked( event.id , checkedFlag ));
-    }
-    
-    //プルボタンが押されたときの挙動
-    const doAction = e => {
-        e.preventDefault();
-        dispatch( showSubTodo( event.id ));
-    }
+    // useEffect(()=>{
+    //     console.log('event:',event);
+    // },[])
 
     return(
         <li>
             <div className="flex">
-                <input type="checkbox" onChange={ doChange } checked={event.checkedFlag}/>{event.title}
-                <div className="flex">
-                    <div className="showSubTodo_button" onClick={ doAction }></div>
-                    <div className="delete_button" onClick={ doDelete }></div>
-                    <div className="date_button" ></div>
-                    <MenuBotton />
-                </div>
+                <h3>{event.title}</h3>
+                <button type="button" onClick={ doDelete }>削除</button>
             </div>
-            <SubList event={ event }/>
+            <form>
+                <input type="text" id="addSubTodo" onChange={ doSubTitleChange } />
+                <input type="submit" value="新規作成" onClick={ doAddTodo } />
+            </form>
+            {
+                event.myTask.map((value , index )=>{
+                    return <SubList key={index} event={ value } myTaskId={event.myTaskId} labelId={event.labelId} />
+                })
+            }
         </li>
     );
 
 }
 
-const MenuBotton = () =>{
-    return (
-        <div className="menuBotton">
-            <div className="top-round"></div>
-            <div className="mid-round"></div>
-            <div className="bottom-round"></div>
-        </div>
-    );
-}
 
 export default Event;

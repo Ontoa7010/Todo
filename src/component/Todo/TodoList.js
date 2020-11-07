@@ -10,10 +10,10 @@ const TodoList = () => {
             <ul>
             { 
                 state.todo.map( (event , index) => {
-                        return(
-                            <Event key={ index } event={ event }/>
-                        );
-                    })
+                    return(
+                        <Event key={ index } event={ event }/>
+                    );
+                })
             }
             </ul>
         </div>

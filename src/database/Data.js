@@ -1,7 +1,7 @@
 import InitialSetting from './index';
 import firebase from 'firebase';
 import { LOAD_DATA } from '../actions';
-import { loadLabel } from '../reducers/LabelReducer';
+import label, { loadLabel } from '../reducers/LabelReducer';
 
 
 const db = InitialSetting();
@@ -10,7 +10,7 @@ const LABEL = "Label";
 const POSTS = "Posts";
 const USERS = "users";
 
-//データベースからラベルの一覧をを読み込む
+/**********************データベースからラベルの一覧をを読み込む**************************/
 const asyncReadLabel = ( ) =>{
     return new Promise( (resolve , reject )=>{
         const data = [];
@@ -21,7 +21,6 @@ const asyncReadLabel = ( ) =>{
         })
         .then(()=>{
             resolve(data);
-            // console.log('labelData:',data);
         })
     });   
 }
@@ -34,26 +33,22 @@ export const readLabel = async ({dispatch}) =>{
     let labelId = '';
 
     data.forEach( (label)=>{  
-        // console.log('label.PostsList:',label.PostsList); 
-        // console.log('label.id:',label.labelId);
         labelId = label.labelId;
         label.PostsList.forEach( (docRef)=>{
             postRefId.push(docRef.id);
         })
     })
-    // console.log('postRefId:',postRefId);
+
     postRefId.forEach( async (docRefId)=>{
+        const insert2 = [];
         const myTask = await db.collection(POSTS).doc(docRefId).get();
         const todo = await db.collection(POSTS).doc(docRefId).collection(MY_TASK).get();
         const insert1 = myTask.data();
         todo.forEach((doc)=>{
-            // console.log('doc:' ,doc);
-            // console.log('docData:', doc.data());
-            const insert2 = { id:doc.id, ...doc.data()};
-            const insertData = { labelId , ...insert1, ...insert2 }
-            // console.log('insertData:',insertData);
-            dispatch({type:LOAD_DATA , data: insertData});
+            insert2.push({ id:doc.id, ...doc.data()});
         });
+        const insertData = { labelId ,myTaskId:docRefId, ...insert1, myTask:insert2 }
+        dispatch({type:LOAD_DATA , data: insertData});
         
     });
 }
@@ -77,7 +72,7 @@ const asyncReadDocument = ( labelName ) => {
     });
 }
 
-// firebaseに格納されているデータを読み取って一覧表示
+/**************************firebaseに格納されているデータを読み取って一覧表示*****************/
 export const readDocument = ({ dispatch } , labelName ) => {
     asyncReadDocument( labelName ).then( 
         (value) => {
@@ -89,11 +84,11 @@ export const readDocument = ({ dispatch } , labelName ) => {
     );
 }
 
-// firebaseに新しいドキュメントを追加
-const insertDocument = ( title , labelName ) =>{
+/***************************firebaseに新しいTodoを作成する*********************************/
+const insertDocument = ( subTitle , myTaskId ) =>{
     return new Promise( (resolve , reject )=> {
-        db.collection(POSTS).doc(labelName).collection(MY_TASK).add({
-            title,
+        db.collection(POSTS).doc(myTaskId).collection(MY_TASK).add({
+            subTitle,
             checkedFlag:    false,
             showListFlag:   true,
             subList:        [],
@@ -106,55 +101,85 @@ const insertDocument = ( title , labelName ) =>{
     })
 }
 
-const addDocument = async ( title , labelName  )=>{
-    return await insertDocument( title , labelName );
+const addDocument = async ( subTitle , myTaskId  )=>{
+    return await insertDocument( subTitle , myTaskId );
 }
 
 
-//firebaseに新しいTaskを追加する
+/************************firebaseに新しいTaskを追加する**********************************/
 const insertTask = ( taskName ) =>{
     return new Promise( (resolve , reject )=>{
+        const id = { myTaskId:'',docId:''};
         db.collection(POSTS).add({
             title: taskName,
         }).then((docRef)=>{
-            db.collection(POSTS).doc(docRef.id).collection(MY_TASK).add({
-                subTitle:  '',
-                checkedFlag:    false,
-                showListFlag:   true,
-                subList:        [],
-                date:           ''
-            }).then((docRef)=>{
-                resolve(docRef.id);
+            id.myTaskId = docRef.id;
+            db.collection(POSTS).doc(docRef.id).collection(MY_TASK).add(
+                {
+                    // subTitle:       '',
+                    // checkedFlag:    false,
+                    // showListFlag:   true,
+                    // subList:        [],
+                    // date:           ''
+                }
+            ).then((docRef)=>{
+                id.docId = docRef.id;
+                resolve(id);
             });
         })
     });
 }
 
-export const addTask = async ( taskName ,labelId , docId ) =>{
-    console.log(`labelId:${labelId}`);
-    const labelRef = await db.collection(POSTS).doc(labelId);
-    const docRef = await db.collection(POSTS).doc(docId);
+export const addTask = async ( taskName , labelId ) =>{
+    labelId = 'U5igZHyR35vSuXDan9jm';
+    const labelRef = await db.collection(LABEL).doc(labelId);
+    const id = await insertTask( taskName );
+    const docRef = db.collection(POSTS).doc(id.myTaskId);
     labelRef.update({
         PostsList:  firebase.firestore.FieldValue.arrayUnion(docRef)
     });
-    return await insertTask( taskName );
+    return id;
 }
 
-//firebaseのドキュメントを削除する
-export const deleteDocument = ( docId , labelName )=>{
-    db.collection(POSTS).doc(labelName).collection(MY_TASK).doc(docId).delete().then(()=>{
-        console.log(`delete document docId(${docId}) complete!`);
+
+/*************************firebaseのドキュメントを削除する***************************/
+export const deleteTaskDB = async ( event )=>{
+    const docRef = db.collection(POSTS).doc(event.myTaskId);
+    //サブコレクション以下も含め全てのドキュメントを削除する
+    const docId = [];
+    event.myTask.forEach((value)=>{
+        docId.push(value.id);
+    })
+    docId.forEach((docId)=>{
+        docRef.collection(MY_TASK).doc(docId).delete();
+    })
+    docRef.delete();
+
+    //ラベルに保存している参照値を削除する
+
+    const labelRef = db.collection(LABEL).doc(event.labelId);
+    const Label= await labelRef.get();
+    const PostsList = Label.data().PostsList;
+
+    const updateList = await PostsList.filter( value => value.id !== event.myTaskId);
+    labelRef.update({
+        PostsList:  updateList
     });
 }
 
-//firebaseのドキュメントを更新する
-export const updateDocument = ( docId ,labelName, data ) =>{
-    db.collection(POSTS).doc(labelName).collection(MY_TASK).doc(docId).update(data);
+/********************firebaseのTodoドキュメントを削除する*********************/
+export const deleteTodoDB = async ( myTaskId ,docId )=>{
+    db.collection(POSTS).doc(myTaskId).collection(MY_TASK).doc(docId).delete();
 }
 
-//firebaseにサブリストにドキュメントを追加
-export const addSubList = ( docId ,labelName, data ) => {
-    db.collection(POSTS).doc(labelName).collection(MY_TASK).doc(docId).update({
+/**************************firebaseのドキュメントを更新する************************/
+export const updateDocument = ( docId ,myTaskId, data ) =>{
+    db.collection(POSTS).doc(myTaskId).collection(MY_TASK).doc(docId).update(data);
+}
+
+/*************************firebaseにサブリストにドキュメントを追加*******************************/
+export const addSubList = ( docId ,myTaskId, data ) => {
+    db.collection(POSTS).doc(myTaskId).collection(MY_TASK).doc(docId).update({
         subList: firebase.firestore.FieldValue.arrayUnion(data)
     }).then(()=>{
         console.log(`add subList complete!`);
@@ -163,9 +188,10 @@ export const addSubList = ( docId ,labelName, data ) => {
     });
 }
 
-//firebaseのサブリストの要素を更新
-export const updateSubList = ( docId , labelName , data  )=>{
-    db.collection(POSTS).doc(labelName).collection(MY_TASK).doc(docId).update({
+/******************firebaseのサブリストの要素を更新**************************/
+export const updateSubList = ( docId , myTaskId , data  )=>{
+    console.log(myTaskId);
+    db.collection(POSTS).doc(myTaskId).collection(MY_TASK).doc(docId).update({
         subList: data
     }).then(()=>{
         console.log(`update subList complete!`);
@@ -174,13 +200,12 @@ export const updateSubList = ( docId , labelName , data  )=>{
     });
 }
 
-//新しいラベルを追加
+/***********************新しいラベルを追加*******************************/
 
 export const addLabel = async ( labelName ) =>{
-    // const postsRef = await db.collection(POSTS).doc('minase');
     db.collection(LABEL).add({
         labelName,
-        postsList:   []
+        PostsList:   []
     }).then( (docRef)=>{
         db.collection(POSTS).doc(docRef.id).collection(MY_TASK).add({
             title:  'Test Sample'
@@ -188,6 +213,7 @@ export const addLabel = async ( labelName ) =>{
     });
 }
 
+//ラベルを削除
 export const deleteLabel = (docId) =>{
     db.collection(POSTS).doc(docId).delete().then(()=>{
         console.log(`delete document docId(${docId}) complete!`);

@@ -26,10 +26,10 @@ const Form = () =>{
     //Todo追加フォームの追加ボタンを押されたときの挙動
     const doAddTodo = async e =>{
         e.preventDefault();
-        const docId = await addTask( title , state.todo.labelId ,  );
-        console.log(`doc.id:${docId}`); 
-        dispatch( addTodo( docId , title ) );
-        dispatch( logAddTodo( docId , title ));
+        const id = await addTask( title  );
+        // console.log(`doc.id:${docId}`); 
+        dispatch( addTodo( id.docId , id.myTaskId ,title ) );
+        dispatch( logAddTodo( id.docId , title ));
         //フォームの内容を初期化
         document.getElementById('addTodo').value = '';
     }

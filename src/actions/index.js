@@ -2,7 +2,8 @@
 
 export const ADD = 'ADD';
 export const ADD_SUB = 'ADD_SUB';
-export const DELETE = 'DELETE';
+export const DELETE_TASK = 'DELETE_TASK';
+export const DELETE_TODO = 'DELETE_TODO';
 export const DELETE_SUB = 'DELETE_SUB';
 export const DELETE_ALL = 'DELETE_ALL';
 export const CHECKED = 'CHECKED';
