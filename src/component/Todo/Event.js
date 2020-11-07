@@ -1,15 +1,23 @@
 import React , { useContext ,useState , useEffect } from 'react';
-import AppContext from '../../context';
 
-import SubList from './SubList';
-import addDocument , { addTask, deleteTaskDB } from '../../database/Data';
+import AppContext from '../../context';
+import addTodoDB from '../../database/TodoDB';
+import { deleteTaskDB } from '../../database/TaskDB';
 import { deleteTask  } from '../../reducers/TodoActionCreaters';
 
+import SubList from './SubList';
 
 const Event = ({ event }) => {
-    const addTaskClassName = 'addTask' + event.myTaskId;
+    //コンテキストを使用
     const { dispatch , state } = useContext( AppContext );  
     const [ subTitle , setSubTitle ] = useState('');
+
+    //渡された引数を分割代入してわかりやすくする
+    const { labelId , myTaskId , myTask , title } = event;
+    //フォームのクラス名を設定
+    const addTaskClassName = 'addTask' + myTaskId;
+    //フォームの入力を行えるか判定するFlag
+    const addTaskFlag = subTitle === '' ? true : false ;
 
     //サブタイトルのフォームに文字が入力された時ステートに保存
     const doSubTitleChange = e =>{
@@ -17,25 +25,29 @@ const Event = ({ event }) => {
         setSubTitle( e.target.value );
     }
 
-    //作成ボタンが押されたときの挙動
+    //サブタイトルの作成ボタンが押されたときの挙動
     const doAddTodo = async e =>{
         e.preventDefault();
-        const docId = await addDocument( subTitle, event.myTaskId );
-        dispatch({type:'ADD_TODO' , docId , subTitle , myTaskId:event.myTaskId });
+        const docId = await addTodoDB( subTitle, myTaskId );
+        dispatch({type:'ADD_TODO' , docId , subTitle , myTaskId:myTaskId });
         document.getElementsByClassName(addTaskClassName).item(0).value = '';
     }
 
-    //削除ボタンが押されたときの挙動
+    //Todoリストの削除ボタンが押されたときの挙動
     const doDelete = async e=>{
         e.preventDefault();
-        state.label.forEach((value)=>{
-            if(value.labelId === event.labelId){
-                deleteTaskDB( event );
-            }
-        })
-        dispatch( deleteTask(event.myTaskId));
+        const result = window.confirm(`本当にタスク：「${title}」を削除しますか`);
+        if(result){
+            state.label.forEach((value)=>{
+                if(value.labelId === labelId){
+                    deleteTaskDB( event );
+                }
+            })
+            dispatch( deleteTask(myTaskId));
+        }
     }
 
+    //デバック用
     // useEffect(()=>{
     //     console.log('event:',event);
     // },[])
@@ -43,16 +55,16 @@ const Event = ({ event }) => {
     return(
         <li>
             <div className="flex">
-                <h3>{event.title}</h3>
+                <h3>{title}</h3>
                 <button type="button" onClick={ doDelete }>削除</button>
             </div>
             <form>
                 <input type="text" className={addTaskClassName} onChange={ doSubTitleChange } />
-                <input type="submit" value="新規作成" onClick={ doAddTodo } />
+                <input type="submit" value="新規作成" onClick={ doAddTodo } disabled={addTaskFlag} />
             </form>
             {
-                event.myTask.map((value , index )=>{
-                    return <SubList key={index} event={ value } myTaskId={event.myTaskId} labelId={event.labelId} />
+                myTask.map(( value , index )=>{
+                    return <SubList key={index} event={ value } myTaskId={myTaskId} labelId={labelId} />
                 })
             }
         </li>

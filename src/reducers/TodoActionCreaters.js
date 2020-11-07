@@ -1,9 +1,9 @@
-import { ADD , ADD_SUB , DELETE_TASK , DELETE_TODO, DELETE_SUB,  DELETE_ALL , CHECKED, CHECKED_SUB , SHOW_SUB_TODO, LOAD_DATA } from '../actions';
+import { ADD_TASK , ADD_SUB , DELETE_TASK , DELETE_TODO, DELETE_SUB,  DELETE_ALL , CHECKED, CHECKED_SUB , SHOW_SUB_TODO, LOAD_DATA } from '../actions';
 /*********************アクションクリエーター******************/
 
 const addTodo = ( docId ,myTaskId, labelId, title) =>{
     return{
-        type:   ADD,
+        type:   ADD_TASK,
         docId,
         myTaskId,
         labelId,
@@ -25,7 +25,7 @@ export const deleteTask = ( myTaskId ) =>{
     }
 }
 
-export function deleteTodo( docId ,myTaskId){
+export const deleteTodo = ( docId ,myTaskId )=>{
     return{
         type:   DELETE_TODO,
         docId,
@@ -33,7 +33,7 @@ export function deleteTodo( docId ,myTaskId){
     }
 }
 
-export function deleteSubTodo( myTaskId , docId , arrayId ){
+export const deleteSubTodo = ( myTaskId , docId , arrayId ) =>{
     return{
         type:   DELETE_SUB, 
         myTaskId,
@@ -42,7 +42,7 @@ export function deleteSubTodo( myTaskId , docId , arrayId ){
     }
 }
 
-export function deleteAllTodo(){
+export const deleteAllTodo = () =>{
     return{
         type:   DELETE_ALL,
     }
@@ -72,6 +72,13 @@ export const checkedSub = ( myTaskId , docId , arrayId , checkedFlag ) => {
         docId,
         arrayId,
         checkedFlag
+    }
+}
+
+export const loadData = ( data ) =>{
+    return {
+        type:LOAD_DATA,
+        data
     }
 }
 

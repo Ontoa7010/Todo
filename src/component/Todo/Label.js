@@ -1,7 +1,7 @@
 import React , { useContext ,useState } from 'react';
 
 import AppContext from '../../context';
-import { addLabel } from '../../database/Data';
+import addLabel from '../../database/LabelDB';
 
 import Form from './Form';
 import Logs from './Logs';
@@ -37,7 +37,7 @@ const Label = ()=>{
                     return(
                         <div key={index} >
                             <h2>{value.labelName}</h2>
-                            <Form labelId={value.labelId} />
+                            <Form labelId={ value.labelId } />
                             <TodoList labelId={value.labelId} />
                         </div>
                     );

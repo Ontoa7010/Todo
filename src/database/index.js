@@ -13,11 +13,19 @@ const firebaseConfig = {
 
 //firebaseの初期設定
 const InitialSetting = () =>{    
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
+    if(firebase.apps.length === 0){
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    }
     const db = firebase.firestore();
     return db;
 }
+
+//CloudStoreの固有名詞を宣言
+export const MY_TASK = "MyTask";
+export const LABEL = "Label";
+export const POSTS = "Posts";
+export const USERS = "users";
 
 
 export default InitialSetting;

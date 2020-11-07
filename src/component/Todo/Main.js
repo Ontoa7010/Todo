@@ -3,14 +3,14 @@ import React , { useContext , useEffect } from 'react';
 import Label from './Label';
 
 import AppContext from '../../context';
-import { readDocument , readLabel , testReadDocument } from '../../database/Data';
+import readDB from '../../database/Data';
 
 const Main = () =>{
 
-    const { dispatch , state }  = useContext( AppContext );
+    const { dispatch }  = useContext( AppContext );
 
     useEffect( ()=>{
-        readLabel( {dispatch} );
+        readDB( {dispatch} );
     },[]);
 
     return(
