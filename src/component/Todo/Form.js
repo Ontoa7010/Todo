@@ -6,6 +6,7 @@ import { logAddTodo , logDeleteAllTodo } from '../../reducers/LogReducer';
 import addDocument , { addLabel ,addTask } from '../../database/Data';
 
 const Form = ({labelId}) =>{
+    const addTodoIdName = 'addTodo' + labelId;
     const { state , dispatch } = useContext( AppContext );
     const [ title , setTitle ] = useState('');
     const [ labelName , setLabelName ] = useState('');
@@ -29,14 +30,14 @@ const Form = ({labelId}) =>{
         dispatch( addTodo( id.docId , id.myTaskId , labelId, title ) );
         dispatch( logAddTodo( id.docId , title ));
         //フォームの内容を初期化
-        document.getElementById('addTodo').value = '';
+        document.getElementsByClassName(addTodoIdName).item(0).value = '';
     }
 
     //新しいラベルを追加
     const doAddLabel = e =>{
         e.preventDefault();
         addLabel( labelName );
-        document.getElementById('addLabel').value = '';
+        document.getElementById(labelName).value = '';
     }
 
     //全てのTodoリストを削除するボタンを押された時の挙動
@@ -57,11 +58,11 @@ const Form = ({labelId}) =>{
     return(
         <>
             <form>ラベルの追加：
-                <input type="text" id="addLabel" onChange={ doChangeLabel }/>
+                <input type="text" id={labelId} onChange={ doChangeLabel }/>
                 <input type="submit" value="追加" onClick={doAddLabel} disabled={addLabelFlag} />
             </form><br />
             <form className="todoForm">Taskの追加
-                <input type="text" id="addTodo" onChange={ doChangeTodo }/>
+                <input type="text" className={addTodoIdName} onChange={ doChangeTodo }/>
                 <input type="submit" value="追加" onClick={ doAddTodo } disabled={ addTodoFlag }/>
                 <input type="submit" value="AllDelete" onClick={ doAllDelete } disabled={ allDeleteTodoFlag }/><br/>
             </form>

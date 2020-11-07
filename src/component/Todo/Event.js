@@ -2,11 +2,12 @@ import React , { useContext ,useState , useEffect } from 'react';
 import AppContext from '../../context';
 
 import SubList from './SubList';
-import addDocument , { deleteTaskDB } from '../../database/Data';
+import addDocument , { addTask, deleteTaskDB } from '../../database/Data';
 import { deleteTask  } from '../../reducers/TodoActionCreaters';
 
 
 const Event = ({ event }) => {
+    const addTaskClassName = 'addTask' + event.myTaskId;
     const { dispatch , state } = useContext( AppContext );  
     const [ subTitle , setSubTitle ] = useState('');
 
@@ -21,7 +22,7 @@ const Event = ({ event }) => {
         e.preventDefault();
         const docId = await addDocument( subTitle, event.myTaskId );
         dispatch({type:'ADD_TODO' , docId , subTitle , myTaskId:event.myTaskId });
-        document.getElementById('addSubTodo').value = '';
+        document.getElementsByClassName(addTaskClassName).item(0).value = '';
     }
 
     //削除ボタンが押されたときの挙動
@@ -46,7 +47,7 @@ const Event = ({ event }) => {
                 <button type="button" onClick={ doDelete }>削除</button>
             </div>
             <form>
-                <input type="text" id="addSubTodo" onChange={ doSubTitleChange } />
+                <input type="text" className={addTaskClassName} onChange={ doSubTitleChange } />
                 <input type="submit" value="新規作成" onClick={ doAddTodo } />
             </form>
             {

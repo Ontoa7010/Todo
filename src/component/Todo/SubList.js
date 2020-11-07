@@ -8,8 +8,8 @@ import { logAddSubTodo , logDeleteTodo } from '../../reducers/LogReducer';
 import { addSubList } from '../../database/Data';
 
 const SubList = ({ event , myTaskId , labelId }) => {
+    const addSubClassName = 'addSubTodo' + event.id;
     const { dispatch } = useContext(AppContext);
-
     const [ body , setBody ] = useState('');
 
     //サブアイテム用：フォームに文字が入力された時の挙動
@@ -54,12 +54,12 @@ const SubList = ({ event , myTaskId , labelId }) => {
         addSubList( event.id , myTaskId , insertData ); 
         dispatch( addSubTodo( event.id , myTaskId , insertData ) );
         dispatch( logAddSubTodo( event.id , body ) );
-        document.getElementById( event.id ).value = '';
+        document.getElementsByClassName( addSubClassName ).item(0).value = '';
     }
 
-    useEffect(()=>{
-        console.log( event );
-    },[])
+    // useEffect(()=>{
+    //     console.log( event );
+    // },[])
 
     const style = event.showListFlag ? { display: "block" } : { display: "none" };
     const addSubFlag = body === '' ? true : false;
@@ -83,7 +83,7 @@ const SubList = ({ event , myTaskId , labelId }) => {
                 </div>
                 <form >
                         <p>サブタスクを追加：</p>
-                        <input type="text" id={event.id} onChange={ doChange }/>
+                        <input type="text" className={addSubClassName} onChange={ doChange }/>
                         <input type="submit" value="追加" onClick={ doAddSubTodo } disabled={ addSubFlag }/>
                     </form>
                 <ul style={ style }>

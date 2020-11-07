@@ -10,7 +10,6 @@ const TodoList = ( { labelId }) => {
     useEffect(()=>{
         const insertData =  state.todo.filter( event => event.labelId === labelId);
         setPosts(insertData);
-        console.log( posts );
     },[state.todo]);
 
     if( posts === null){
